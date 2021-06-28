@@ -1,0 +1,22 @@
+#!/bin/bash
+DT="$(date --utc --iso-8601=seconds)"
+BOOTPATH=boot/debian-installer/arm64/
+qemu-system-aarch64 \
+    -d unimp,guest_errors,strace \
+    -D qemu.log \
+    -serial mon:stdio \
+    -machine virt,virtualization=false,gic-version=3 \
+    -cpu cortex-a53 \
+    -m 512M \
+    -kernel "$BOOTPATH/linux" \
+    -initrd "$BOOTPATH/initrd.gz" \
+    -append "earlyprintk console=ttyAMA0 init=/bin/ash" \
+    -nographic \
+    -netdev user,id=net0 \
+    -device driver=virtio-net-pci,netdev=net0 \
+    -object rng-random,filename=/dev/urandom,id=rng0 \
+    -device virtio-rng-pci,rng=rng0 \
+    -rtc base=utc,clock=host
+#    -cdrom https://nl.alpinelinux.org/alpine/latest-stable/releases/aarch64/alpine-standard-3.13.5-aarch64.iso
+#    -machine dumpdtb=virt.dtb \
+#    -bios /data/data/com.termux/files/usr/share/qemu/edk2-aarch64-code.fd \
