@@ -10,7 +10,7 @@ qemu-system-aarch64 \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
-    -append "earlyprintk console=ttyAMA0 init=/bin/ash" \
+    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
     -nographic \
     -netdev user,id=net0 \
     -device driver=virtio-net-pci,netdev=net0 \
