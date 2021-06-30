@@ -1,8 +1,8 @@
 #!/bin/bash
 DT="$(date --utc --iso-8601=seconds)"
-BOOTPATH=boot/debian-installer/arm64/
+BOOTPATH=.
 qemu-system-aarch64 \
-    -d unimp,guest_errors,strace \
+    -d unimp,guest_errors \
     -D qemu.log \
     -serial mon:stdio \
     -machine virt,virtualization=false,gic-version=3 \
