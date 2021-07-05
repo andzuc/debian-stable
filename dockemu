@@ -1,6 +1,12 @@
 #!/bin/bash
+
 DT="$(date --utc --iso-8601=seconds)"
-BOOTPATH=.
+BOOTPATH=boot
+
+cp -f fetch/linux "$BOOTPATH/linux"
+cp -f fetch/initrd.gz "$BOOTPATH/initrd.gz"
+echo ./preseed.cfg|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
+
 qemu-system-aarch64 \
     -d unimp,guest_errors \
     -D qemu.log \
@@ -10,7 +16,7 @@ qemu-system-aarch64 \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
-    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
+    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low auto-install/enable=true" \
     -nographic \
     -netdev user,id=net0 \
     -device driver=virtio-net-pci,netdev=net0 \
@@ -20,3 +26,6 @@ qemu-system-aarch64 \
 #    -cdrom https://nl.alpinelinux.org/alpine/latest-stable/releases/aarch64/alpine-standard-3.13.5-aarch64.iso
 #    -machine dumpdtb=virt.dtb \
 #    -bios /data/data/com.termux/files/usr/share/qemu/edk2-aarch64-code.fd \
+#    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
+
+reset
