@@ -1,8 +1,12 @@
 #!/bin/bash
 NETBOOT_ROOT="https://deb.debian.org/debian/dists/stable/main/installer-arm64/current/images"
-NETBOOT_URL="$NETBOOT_ROOT/netboot/debian-installer/arm64"
+NETBOOT_KERNEL="netboot/debian-installer/arm64"
+NETBOOT_URL="$NETBOOT_ROOT/$NETBOOT_KERNEL"
 
 cd fetch
-curl "$NETBOOT_ROOT/MD5SUMS"
-curl -O "$NETBOOT_URL/linux"
-curl -O "$NETBOOT_URL/initrd.gz"
+curl -O "$NETBOOT_ROOT/MD5SUMS"
+
+./netboot/debian-installer/arm64/initrd.gz
+
+#curl -O "$NETBOOT_URL/linux"
+#curl -O "$NETBOOT_URL/initrd.gz"
