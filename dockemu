@@ -5,13 +5,17 @@ BOOTPATH=boot
 
 cp -f fetch/linux "$BOOTPATH/linux"
 cp -f fetch/initrd.gz "$BOOTPATH/initrd.gz"
+
+rm -f "$BOOTPATH/sys.img"
+qemu-img create -f qcow2 "$BOOTPATH/sys.img" 5G
+
 echo ./preseed.cfg|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
 
 qemu-system-aarch64 \
     -d unimp,guest_errors \
     -D qemu.log \
     -serial mon:stdio \
-    -machine virt,virtualization=false,gic-version=3 \
+    -machine virt,virtualization=true,gic-version=3 \
     -cpu cortex-a53 \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
@@ -22,10 +26,14 @@ qemu-system-aarch64 \
     -device driver=virtio-net-pci,netdev=net0 \
     -object rng-random,filename=/dev/urandom,id=rng0 \
     -device virtio-rng-pci,rng=rng0 \
-    -rtc base=utc,clock=host
+    -rtc base=utc,clock=host \
+    -device virtio-scsi-pci,id=scsi0 \
+    -device scsi-hd,drive=syshd,bus=scsi0.0,channel=0,scsi-id=0,lun=0 \
+    -drive file="$BOOTPATH/sys.img",format=qcow2,if=none,id=syshd
 #    -cdrom https://nl.alpinelinux.org/alpine/latest-stable/releases/aarch64/alpine-standard-3.13.5-aarch64.iso
 #    -machine dumpdtb=virt.dtb \
 #    -bios /data/data/com.termux/files/usr/share/qemu/edk2-aarch64-code.fd \
 #    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
-
-reset
+#    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
+    
+#reset
