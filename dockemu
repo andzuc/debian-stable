@@ -20,7 +20,7 @@ qemu-system-aarch64 \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
-    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low auto-install/enable=true" \
+    -append "earlyprintk=serial console=ttyAMA0 BOOT_DEBUG=0 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
     -nographic \
     -netdev user,id=net0 \
     -device driver=virtio-net-pci,netdev=net0 \
