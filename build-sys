@@ -10,7 +10,7 @@ cp -f fetch/initrd.gz "$BOOTPATH/initrd.gz"
 rm -f "$BOOTPATH/sys.img"
 qemu-img create -f qcow2 "$BOOTPATH/sys.img" 500M
 
-echo ./preseed.cfg|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
+ls ./preseed.cfg ./onfail.sh|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
 
 qemu-system-aarch64 \
     -d unimp,guest_errors \
