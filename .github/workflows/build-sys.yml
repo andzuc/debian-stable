@@ -9,5 +9,9 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
+      - name: Install QEMU
+        run: |
+          apt-get update -y
+          apt-get install -y qemu-system-aarch64
       - name: Build system image
         run: ./build-sys
