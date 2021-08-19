@@ -3,6 +3,7 @@ NETBOOT_ROOT="https://deb.debian.org/debian/dists/stable/main/installer-arm64/cu
 NETBOOT_KERNEL="netboot/debian-installer/arm64"
 NETBOOT_URL="$NETBOOT_ROOT/$NETBOOT_KERNEL"
 
+[ -d fetch ] || mkdir fetch
 cd fetch
 curl -O "$NETBOOT_ROOT/MD5SUMS"
 
