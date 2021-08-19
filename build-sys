@@ -3,6 +3,7 @@
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
 
+[ -d "$BOOTPATH" ] || mkdir "$BOOTPATH"
 cp -f fetch/linux "$BOOTPATH/linux"
 cp -f fetch/initrd.gz "$BOOTPATH/initrd.gz"
 
