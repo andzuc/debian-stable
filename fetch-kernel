@@ -6,7 +6,8 @@ NETBOOT_URL="$NETBOOT_ROOT/$NETBOOT_KERNEL"
 cd fetch
 curl -O "$NETBOOT_ROOT/MD5SUMS"
 
-./netboot/debian-installer/arm64/initrd.gz
+grep "\.\/${NETBOOT_KERNEL}\/linux\|\.\/${NETBOOT_KERNEL}\/initrd.gz" MD5SUMS > MD5SUMS2
+sed -i "s|\./${NETBOOT_KERNEL}/||g" MD5SUMS2
 
 #curl -O "$NETBOOT_URL/linux"
 #curl -O "$NETBOOT_URL/initrd.gz"
