@@ -6,22 +6,35 @@ NETBOOT_URL="$NETBOOT_ROOT/$NETBOOT_KERNEL"
 cd fetch
 curl -O "$NETBOOT_ROOT/MD5SUMS"
 
-function get_md5
+function get_md5_remote
 {
     local REMOTE_FILE="$1"
     grep "$REMOTE_FILE" MD5SUMS|awk '{print $1}'
+}
+
+function get_md5_local
+{
+    local LOCAL_FILE="$1"
+    md5sum "$LOCAL_FILE"|awk '{print $1}'
 }
 
 function check_md5
 {
     local REMOTE_FILE="$1"
     local LOCAL_FILE="$2"
-    
+    [ "$(get_md5_remote $REMOTE_FILE)" = "$(get_md5_local $LOCAL_FILE)" ]
 }
 
-echo $(get_md5 "./${NETBOOT_KERNEL}/linux")
-#grep "\.\/${NETBOOT_KERNEL}\/linux\|\.\/${NETBOOT_KERNEL}\/initrd.gz" MD5SUMS > MD5SUMS2
-#sed -i "s|\./${NETBOOT_KERNEL}/||g" MD5SUMS2
+if ! check_md5 "./${NETBOOT_KERNEL}/linux" "linux" ; then
+    echo "$0: linux: fetching"
+    curl -O "$NETBOOT_URL/linux"
+else
+    echo "$0: linux: updated"
+fi
 
-#curl -O "$NETBOOT_URL/linux"
-#curl -O "$NETBOOT_URL/initrd.gz"
+if ! check_md5 "./${NETBOOT_KERNEL}/initrd.gz" "initrd.gz" ; then
+    echo "$0: initrd.gz: fetching"
+    curl -O "$NETBOOT_URL/initrd.gz"
+else
+    echo "$0: initrd.gz: updated"
+fi
