@@ -8,7 +8,7 @@ cp -f fetch/linux "$BOOTPATH/linux"
 cp -f fetch/initrd.gz "$BOOTPATH/initrd.gz"
 
 rm -f "$BOOTPATH/sys.img"
-qemu-img create -f qcow2 "$BOOTPATH/sys.img" 5G
+qemu-img create -f qcow2 "$BOOTPATH/sys.img" 500M
 
 echo ./preseed.cfg|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
 
