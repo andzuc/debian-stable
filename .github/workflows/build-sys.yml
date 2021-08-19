@@ -1,0 +1,13 @@
+name: build-sys
+
+on:
+  workflow_dispatch:
+    
+jobs:
+  build-sys:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Build system image
+        run: build-sys

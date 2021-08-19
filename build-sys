@@ -36,4 +36,4 @@ qemu-system-aarch64 \
 #    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
 #    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
     
-#reset
+reset
