@@ -1,9 +1,9 @@
 #!/bin/sh
 onterm()
 {
-    echo ">>> SYSLOG"
-    cat /var/log/syslog
-    echo "<<< SYSLOG"
+    echo ">>> SYSLOG" >/dev/console
+    cat /var/log/syslog >/dev/console
+    echo "<<< SYSLOG" >/dev/console
 }
 
 trap onterm 15
