@@ -3,6 +3,8 @@
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
 
+bzip2 -d "edk2-aarch64-code.fd.bz2"
+
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
 cp -f fetch/linux "$BOOTPATH/linux"
