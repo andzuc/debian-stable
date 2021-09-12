@@ -29,7 +29,7 @@ qemu-system-aarch64 \
     -D qemu.log \
     -serial mon:stdio \
     -machine virt,virtualization=true,kernel_irqchip=on,gic-version=3 \
-    -bios "/data/data/com.termux/files/usr/share/qemu/edk2-aarch64-code.fd" \
+    -bios "edk2-aarch64-code.fd" \
     -cpu cortex-a53 \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
