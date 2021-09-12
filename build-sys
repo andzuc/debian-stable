@@ -3,12 +3,12 @@
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
 
-bzip2 -d "edk2-aarch64-code.fd.bz2"
-
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
-cp -f fetch/linux "$BOOTPATH/linux"
-cp -f fetch/initrd.gz "$BOOTPATH/initrd.gz"
+cp -f fetch/linux "$BOOTPATH"
+cp -f fetch/initrd.gz "$BOOTPATH"
+cp -f edk2-aarch64-code.fd.bz2 "$BOOTPATH"
+bzip2 -d "$BOOTPATH/edk2-aarch64-code.fd.bz2"
 
 # add shutdown hook
 cd "$BOOTPATH"
@@ -20,7 +20,7 @@ gzip initrd
 cd -
 
 # add preseed
-ls ./preseed.cfg ./setmirror.sh|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
+ls ./preseed.cfg ./setmirror.sh ./watchdog.sh|cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
 
 # create system image hd
 rm -f "$BOOTPATH/sys.img"
@@ -31,7 +31,6 @@ qemu-system-aarch64 \
     -D qemu.log \
     -serial mon:stdio \
     -machine virt,virtualization=true,kernel_irqchip=on,gic-version=3 \
-    -bios "edk2-aarch64-code.fd" \
     -cpu cortex-a53 \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
@@ -48,7 +47,7 @@ qemu-system-aarch64 \
     -drive file="$BOOTPATH/sys.img",format=qcow2,if=none,id=syshd
 #    -cdrom https://nl.alpinelinux.org/alpine/latest-stable/releases/aarch64/alpine-standard-3.13.5-aarch64.iso
 #    -machine dumpdtb=virt.dtb \
-#    -bios /data/data/com.termux/files/usr/share/qemu/edk2-aarch64-code.fd \
+#    -bios "edk2-aarch64-code.fd" \
 #    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
 #    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
     
