@@ -8,6 +8,7 @@ mkdir "$BOOTPATH"
 cp -f fetch/linux "$BOOTPATH/linux"
 cp -f fetch/initrd.gz "$BOOTPATH/initrd.gz"
 
+# add shutdown hook
 cd "$BOOTPATH"
 gzip -d initrd.gz
 cpio -H newc -F initrd -idmv etc/inittab
@@ -16,8 +17,10 @@ echo etc/inittab|cpio -H newc -F initrd -oAv
 gzip initrd
 cd -
 
+# add preseed
 ls ./preseed.cfg ./setmirror.sh|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
 
+# create system image hd
 rm -f "$BOOTPATH/sys.img"
 qemu-img create -f qcow2 "$BOOTPATH/sys.img" 500M
 
@@ -25,7 +28,8 @@ qemu-system-aarch64 \
     -d unimp,guest_errors \
     -D qemu.log \
     -serial mon:stdio \
-    -machine virt,virtualization=true,gic-version=3 \
+    -machine virt,virtualization=true,kernel_irqchip=on,gic-version=3 \
+    -bios "/data/data/com.termux/files/usr/share/qemu/edk2-aarch64-code.fd" \
     -cpu cortex-a53 \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
