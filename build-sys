@@ -3,14 +3,23 @@
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
 
-[ -d "$BOOTPATH" ] || mkdir "$BOOTPATH"
+rm -rf "$BOOTPATH"
+mkdir "$BOOTPATH"
 cp -f fetch/linux "$BOOTPATH/linux"
 cp -f fetch/initrd.gz "$BOOTPATH/initrd.gz"
 
+cd "$BOOTPATH"
+gzip -d initrd.gz
+cpio -H newc -F initrd -idmv etc/inittab
+echo '::shutdown:cat /var/log/syslog' >>etc/inittab
+echo etc/inittab|cpio -H newc -F initrd -oAv
+gzip initrd
+cd -
+
+ls ./preseed.cfg ./setmirror.sh|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
+
 rm -f "$BOOTPATH/sys.img"
 qemu-img create -f qcow2 "$BOOTPATH/sys.img" 500M
-
-ls ./preseed.cfg ./onfail.sh|cpio -H newc -o|gzip >>"$BOOTPATH/initrd.gz"
 
 qemu-system-aarch64 \
     -d unimp,guest_errors \
@@ -21,7 +30,7 @@ qemu-system-aarch64 \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
-    -append "earlyprintk=serial console=ttyAMA0 BOOT_DEBUG=2 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
+    -append "earlyprintk=serial console=ttyAMA0 BOOT_DEBUG=0 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
     -nographic \
     -netdev user,id=net0 \
     -device driver=virtio-net-pci,netdev=net0 \

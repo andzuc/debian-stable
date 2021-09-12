@@ -1,6 +1,6 @@
 #!/bin/sh
 # https://serverfault.com/a/528605
-echo "Start ubuntu.sh runscript" >> /var/log/syslog
+echo "Start setmirror.sh runscript" >> /var/log/syslog
 for x in `cat /proc/cmdline`; do
         case $x in RPHOST*)
                 eval $x
