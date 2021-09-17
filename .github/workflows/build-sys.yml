@@ -9,7 +9,6 @@ env:
 jobs:
   build-sys:
     runs-on: ubuntu-latest
-    timeout-minutes: ${{ env.TIMEOUT }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -18,6 +17,7 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y qemu-system-aarch64
       - name: Build system image
+        timeout-minutes: ${{ env.TIMEOUT }}
         run: |
           ./fetch-kernel
           ./build-sys ${{ env.TIMEOUT }}
