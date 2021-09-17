@@ -22,6 +22,7 @@ cd -
 
 # set watchdog
 sed "s/TIMEOUT/${TIMEOUT}/g" -i ./watchdog.sh
+echo "WATCHDOG: timeout = $TIMEOUT"
 # add preseed
 ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
 
