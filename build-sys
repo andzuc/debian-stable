@@ -54,5 +54,6 @@ qemu-system-aarch64 \
 #    -bios "edk2-aarch64-code.fd" \
 #    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
 #    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
-    
-reset
+
+# if terminal then reset
+[ -t 0 -a -t 1 -a -t 2 ]&&reset
