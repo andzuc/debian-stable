@@ -24,7 +24,7 @@ ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 
 
 # create system image hd
 rm -f "$BOOTPATH/sys.img"
-qemu-img create -f qcow2 "$BOOTPATH/sys.img" 700M
+qemu-img create -f qcow2 "$BOOTPATH/sys.img" 1G
 
 qemu-system-aarch64 \
     -d unimp,guest_errors \
