@@ -7,7 +7,7 @@ jobs:
   build-sys:
     runs-on: ubuntu-latest
     env:
-      TIMEOUT: 60
+      TIMEOUT: 5
     timeout-minutes: ${{ env.TIMEOUT }}
     steps:
       - name: Checkout code
