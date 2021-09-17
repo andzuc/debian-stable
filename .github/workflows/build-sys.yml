@@ -5,8 +5,10 @@ on:
     
 jobs:
   build-sys:
+    env:
+      TIMEOUT: 60
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: ${{env.TIMEOUT}}
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
@@ -17,4 +19,4 @@ jobs:
       - name: Build system image
         run: |
           ./fetch-kernel
-          ./build-sys
+          ./build-sys ${{env.TIMEOUT}}

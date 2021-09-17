@@ -1,4 +1,4 @@
 #!/bin/sh
 
-sleep 1680
+sleep TIMEOUT
 poweroff

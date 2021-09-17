@@ -2,6 +2,7 @@
 
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
+TIMEOUT="$((($1-1)*60))"
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
@@ -19,6 +20,8 @@ echo etc/inittab|cpio -H newc -F initrd -oAv
 gzip initrd
 cd -
 
+# set watchdog
+sed "s/TIMEOUT/${TIMEOUT}/g" -i ./watchdog.sh
 # add preseed
 ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
 
