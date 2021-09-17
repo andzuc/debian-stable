@@ -1,11 +1,8 @@
 #!/bin/sh
-onterm()
-{
-    echo ">>> SYSLOG" >/dev/console
-    cat /var/log/syslog >/dev/console
-    echo "<<< SYSLOG" >/dev/console
-}
+echo ">>> SYSLOG"
+cat /var/log/syslog
+echo "<<< SYSLOG"
 
-trap onterm 15
-
-sleep 1d
+echo ">>> DF"
+df -h
+echo "<<< DF"

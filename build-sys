@@ -14,13 +14,13 @@ bzip2 -d "$BOOTPATH/edk2-aarch64-code.fd.bz2"
 cd "$BOOTPATH"
 gzip -d initrd.gz
 cpio -H newc -F initrd -idmv etc/inittab
-echo '::shutdown:cat /var/log/syslog' >>etc/inittab
+echo '::shutdown:/onfail.sh' >>etc/inittab
 echo etc/inittab|cpio -H newc -F initrd -oAv
 gzip initrd
 cd -
 
 # add preseed
-ls ./preseed.cfg ./setmirror.sh ./watchdog.sh|cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
+ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
 
 # create system image hd
 rm -f "$BOOTPATH/sys.img"
