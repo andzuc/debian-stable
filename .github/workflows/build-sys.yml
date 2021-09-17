@@ -2,11 +2,10 @@ name: build-sys
 
 on:
   workflow_dispatch:
-    
+env:
+  TIMEOUT: 60
 jobs:
   build-sys:
-    env:
-      TIMEOUT: 60
     runs-on: ubuntu-latest
     timeout-minutes: ${{env.TIMEOUT}}
     steps:
