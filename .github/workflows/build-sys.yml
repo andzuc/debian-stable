@@ -16,7 +16,7 @@ jobs:
       - name: Build system image
         timeout-minutes: 60
         env:
-          X_CONTEXT: ${{ toJSON(job) }}
+          X_CONTEXT: ${{ toJSON(runner) }}
         run: |
           echo "$X_CONTEXT"
           #./fetch-kernel
