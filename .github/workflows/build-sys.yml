@@ -16,9 +16,9 @@ jobs:
       - name: Build system image
         timeout-minutes: 60
         env:
-          STEPS_CONTEXT: ${{ toJSON(steps) }}
+          X_CONTEXT: ${{ toJSON(job) }}
         run: |
-          echo "$STEPS_CONTEXT"
+          echo "$X_CONTEXT"
           #./fetch-kernel
           #./build-sys ${{ env.TIMEOUT }}
       - name: Upload system image
