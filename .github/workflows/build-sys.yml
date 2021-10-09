@@ -2,9 +2,6 @@ name: build-sys
 
 on:
   workflow_dispatch:
-
-env:
-  TIMEOUT: 60
     
 jobs:
   build-sys:
@@ -17,10 +14,13 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y qemu-system-aarch64
       - name: Build system image
-        timeout-minutes: ${{ ${{ env.TIMEOUT }} }}
+        timeout-minutes: 60
+        env:
+          STEPS_CONTEXT: ${{ toJSON(steps) }}
         run: |
-          ./fetch-kernel
-          ./build-sys ${{ env.TIMEOUT }}
+          echo "$STEPS_CONTEXT"
+          #./fetch-kernel
+          #./build-sys ${{ env.TIMEOUT }}
       - name: Upload system image
         uses: actions/upload-artifact@v2
         with:
