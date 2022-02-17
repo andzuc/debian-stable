@@ -17,10 +17,10 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y qemu-system-aarch64
       - name: Build system image
-        timeout-minutes: ${{ env.TIMEOUT }}
+        timeout-minutes: ${{ env.TIMEOUT + 0 }}
         run: |
-          ./fetch-kernel
-          ./build-sys ${{ env.TIMEOUT }}
+          #./fetch-kernel
+          #./build-sys ${{ env.TIMEOUT }}
       - name: Upload system image
         uses: actions/upload-artifact@v2
         with:
