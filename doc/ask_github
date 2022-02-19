@@ -1,0 +1,6 @@
+Script access to current step.timeout-minutes
+
+Hi. In a job step i set "timeout-minutes" to a given value, say 60 minutes.
+After in the same step i run a script that will be safely killed before the 60 minutes.
+To safely kill the script i need to get the value of "timeout-minutes".
+Is there any way to get the value?
