@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TIMEOUT: 60
+  TIMEOUT: 5
     
 jobs:
   build-sys:
@@ -19,8 +19,8 @@ jobs:
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
-          #./fetch-kernel
-          #./build-sys ${{ env.TIMEOUT }}
+          ./fetch-kernel
+          ./build-sys ${{ env.TIMEOUT }}
       - name: Upload system image
         uses: actions/upload-artifact@v2
         with:
