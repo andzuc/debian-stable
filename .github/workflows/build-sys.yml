@@ -17,7 +17,7 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y qemu-system-aarch64
       - name: Build system image
-        timeout-minutes: ${{ env.TIMEOUT + 0 }}
+        timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
           #./fetch-kernel
           #./build-sys ${{ env.TIMEOUT }}
