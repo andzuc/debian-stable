@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 env:
-  TIMEOUT: 5
+  TIMEOUT: 60
     
 jobs:
   build-sys:
