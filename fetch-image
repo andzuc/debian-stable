@@ -1,0 +1,2 @@
+#!/bin/bash
+gh run download -n dockemu-arm64 -D image
