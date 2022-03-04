@@ -1,0 +1,29 @@
+#!/bin/bash
+
+BOOTPATH=image
+
+qemu-system-aarch64 \
+    -d unimp,guest_errors \
+    -D qemu.log \
+    -serial mon:stdio \
+    -machine virt,virtualization=true,kernel_irqchip=on,gic-version=3 \
+    -cpu cortex-a53 \
+    -m 512M \
+    -nographic \
+    -kernel "$BOOTPATH/boot/$(cat $BOOTPATH/boot/vmlinuz|grep '^.*$')" \
+    -initrd "$BOOTPATH/boot/$(cat $BOOTPATH/boot/initrd.img|grep '^.*$')" \
+    -append "earlyprintk=serial console=ttyAMA0 root=/dev/sda1" \
+    -netdev user,id=net0 \
+    -device driver=virtio-net-pci,netdev=net0 \
+    -object rng-random,filename=/dev/urandom,id=rng0 \
+    -device virtio-rng-pci,rng=rng0 \
+    -rtc base=utc,clock=host \
+    -device virtio-scsi-pci,id=scsi0 \
+    -device scsi-hd,drive=syshd,bus=scsi0.0,channel=0,scsi-id=0,lun=0,bootindex=0 \
+    -drive file="$BOOTPATH/sys.img",format=qcow2,if=none,id=syshd
+#    -cdrom https://nl.alpinelinux.org/alpine/latest-stable/releases/aarch64/alpine-standard-3.13.5-aarch64.iso
+#    -machine dumpdtb=virt.dtb \
+#    -bios "$BOOTPATH/edk2-aarch64-code.fd" \
+#    -append "earlyprintk=serial console=ttyAMA0 BOOT_DEBUG=0 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
+#    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
+#    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
