@@ -1,2 +1,34 @@
 #!/bin/bash
-gh run download -n dockemu-arm64 -D image
+NETBOOT_ROOT="https://deb.debian.org/debian/dists/stable/main/installer-arm64/current/images"
+NETBOOT_KERNEL="netboot/debian-installer/arm64"
+NETBOOT_URL="$NETBOOT_ROOT/$NETBOOT_KERNEL"
+
+[ -d image ] || mkdir image
+cd image
+curl -O "$NETBOOT_ROOT/MD5SUMS"
+
+function get_md5_remote
+{
+    local REMOTE_FILE="$1"
+    grep "$REMOTE_FILE" MD5SUMS|awk '{print $1}'
+}
+
+function get_md5_local
+{
+    local LOCAL_FILE="$1"
+    md5sum "$LOCAL_FILE"|awk '{print $1}'
+}
+
+function check_md5
+{
+    local REMOTE_FILE="$1"
+    local LOCAL_FILE="$2"
+    [ "$(get_md5_remote $REMOTE_FILE)" = "$(get_md5_local $LOCAL_FILE)" ]
+}
+
+if ! check_md5 "./${NETBOOT_KERNEL}/initrd.gz" "initrd.gz" ; then
+    echo "$0: image: fetching"
+    gh run download -n dockemu-arm64 -D image
+else
+    echo "$0: image: updated"
+fi

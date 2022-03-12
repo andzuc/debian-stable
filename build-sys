@@ -55,6 +55,10 @@ qemu-system-aarch64 \
 #    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
 #    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
 
+cd "$BOOTPATH"
+md5sum linux initrd.gz sys.img >MD5SUMS
+cd -
+
 # if terminal then reset
 if [ -t 0 -a -t 1 -a -t 2 ]
 then
