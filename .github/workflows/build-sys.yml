@@ -22,11 +22,15 @@ jobs:
           ./fetch-kernel
           ./build-sys ${{ env.TIMEOUT }}
       - name: Upload system image
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: dockemu-arm64
           path: |
             boot/linux
             boot/initrd.gz
             boot/sys.img
-            boot/MD5SUMS
+      - name: Upload MD5SUMS
+        uses: actions/upload-artifact@v3
+        with:
+          name: dockemu-arm64.md5
+          path: boot/MD5SUMS

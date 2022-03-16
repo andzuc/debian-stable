@@ -1,11 +1,4 @@
 #!/bin/bash
-NETBOOT_ROOT="https://deb.debian.org/debian/dists/stable/main/installer-arm64/current/images"
-NETBOOT_KERNEL="netboot/debian-installer/arm64"
-NETBOOT_URL="$NETBOOT_ROOT/$NETBOOT_KERNEL"
-
-[ -d image ] || mkdir image
-cd image
-curl -O "$NETBOOT_ROOT/MD5SUMS"
 
 function get_md5_remote
 {
@@ -26,9 +19,6 @@ function check_md5
     [ "$(get_md5_remote $REMOTE_FILE)" = "$(get_md5_local $LOCAL_FILE)" ]
 }
 
-if ! check_md5 "./${NETBOOT_KERNEL}/initrd.gz" "initrd.gz" ; then
-    echo "$0: image: fetching"
-    gh run download -n dockemu-arm64 -D image
-else
-    echo "$0: image: updated"
-fi
+[ -d image ] || mkdir image
+gh run download -n dockemu-arm64 -D image
+exit 0
