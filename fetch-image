@@ -16,9 +16,24 @@ function check_md5
 {
     local REMOTE_FILE="$1"
     local LOCAL_FILE="$2"
-    [ "$(get_md5_remote $REMOTE_FILE)" = "$(get_md5_local $LOCAL_FILE)" ]
+    [ -f $LOCAL_FILE ]&&[ "$(get_md5_remote $REMOTE_FILE)" = "$(get_md5_local $LOCAL_FILE)" ]
 }
 
 [ -d image ] || mkdir image
-gh run download -n dockemu-arm64 -D image
+cd image
+rm MD5SUMS
+gh run download -n dockemu-arm64.md5
+for F in `cat MD5SUMS|awk '{ print $2; }'`; do
+    if ! check_md5 $F $F; then
+	gh run download -n dockemu-arm64
+	exit 1
+    fi
+done
 exit 0
+
+# if ! check_md5 "./${NETBOOT_KERNEL}/linux" "linux" ; then
+#     echo "$0: linux: fetching"
+#     curl -O "$NETBOOT_URL/linux"
+# else
+#     echo "$0: linux: updated"
+# fi
