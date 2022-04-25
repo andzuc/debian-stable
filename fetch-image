@@ -25,6 +25,10 @@ rm MD5SUMS
 gh run download -n dockemu-arm64.md5
 for F in `cat MD5SUMS|awk '{ print $2; }'`; do
     if ! check_md5 $F $F; then
+	echo "$F: md5 changed: downloading"
+	for RMF in `cat MD5SUMS|awk '{ print $2; }'`; do
+	    rm -f "$RMF"
+	done
 	gh run download -n dockemu-arm64
 	exit 1
     fi
