@@ -58,7 +58,8 @@ qemu-system-aarch64 \
 
 cd "$BOOTPATH"
 md5sum linux initrd.gz sys.img >MD5SUMS
-tar -cvJf dockemu-arm64.tar.xz .
+tar -cvJf ../dockemu-arm64.tar.xz --exclude etc .
+mv ../dockemu-arm64.tar.xz .
 cd -
 
 # if terminal then reset
