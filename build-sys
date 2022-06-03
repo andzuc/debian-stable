@@ -55,11 +55,8 @@ qemu-system-aarch64 \
 #    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
 #    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
 
-
 cd "$BOOTPATH"
 md5sum linux initrd.gz sys.img >MD5SUMS
-tar -cvJf ../dockemu-arm64.tar.xz --exclude etc .
-mv ../dockemu-arm64.tar.xz .
 cd -
 
 # if terminal then reset

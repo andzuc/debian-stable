@@ -26,7 +26,9 @@ jobs:
         with:
           name: dockemu-arm64
           path: |
-            boot/dockemu-arm64.tar.xz
+            boot/linux
+            boot/initrd.gz
+            boot/sys.img
       - name: Upload MD5SUMS
         uses: actions/upload-artifact@v3
         with:
