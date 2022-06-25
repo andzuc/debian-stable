@@ -39,6 +39,7 @@ ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 
 # create system image hd
 for i in $(seq 1 "${SYS_SIZE}"); do rm -f "$BOOTPATH/sys_$i.img"; done
 for i in $(seq 1 "${SYS_SIZE}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1G; done
+for i in $(seq 1 "${SYS_SIZE}"); do dd if=/dev/zero of="$BOOTPATH/test_$i.img" bs=1K count=1M; done
 ls -l "$BOOTPATH"
 exit
 
