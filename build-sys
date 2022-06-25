@@ -3,16 +3,16 @@
 if ! [ $# -eq 2 ]; then
     APP_NAME="$(basename $0)"
     echo "${APP_NAME}: usage is: ${APP_NAME} {TIMEOUT} {SYS_SIZE}"
+    echo -e "TIMEOUT:\tBuild time in minutes before machine is powered off"
+    echo -e "SYS_SIZE:\tTotal system disks size in GBi"
     exit 1
 fi
 
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
 TIMEOUT="$((($1-1)*60))"
-# calc ceiling of system image size if decimal 
+# ceiling of system image size if decimal 
 SYS_SIZE="$(echo $2|awk '{print $1%1?int($1)+1:$1}')"
-echo $SYS_SIZE
-exit
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
@@ -37,8 +37,10 @@ echo "WATCHDOG: timeout = $TIMEOUT"
 ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
 
 # create system image hd
-rm -f "$BOOTPATH/sys.img"
-qemu-img create -f qcow2 "$BOOTPATH/sys.img" 1G
+for i in $(seq 1 "${SYS_SIZE}"); do rm -f "$BOOTPATH/sys_$i.img"; done
+for i in $(seq 1 "${SYS_SIZE}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1G; done
+ls -l "$BOOTPATH"
+exit
 
 qemu-system-aarch64 \
     -d unimp,guest_errors \
