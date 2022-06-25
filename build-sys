@@ -1,8 +1,18 @@
 #!/bin/bash
 
+if ! [ $# -eq 2 ]; then
+    APP_NAME="$(basename $0)"
+    echo "${APP_NAME}: usage is: ${APP_NAME} {TIMEOUT} {SYS_SIZE}"
+    exit 1
+fi
+
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
 TIMEOUT="$((($1-1)*60))"
+# calc ceiling of system image size if decimal 
+SYS_SIZE="$(echo $2|awk '{print $1%1?int($1)+1:$1}')"
+echo $SYS_SIZE
+exit
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
