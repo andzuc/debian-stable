@@ -5,8 +5,8 @@ on:
 
 env:
   TIMEOUT: 60
-  SYS_SIZE: 10
-    
+  SYS_SIZE: 20
+
 jobs:
   build-sys:
     runs-on: ubuntu-latest
