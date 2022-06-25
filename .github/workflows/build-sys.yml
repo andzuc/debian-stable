@@ -5,7 +5,7 @@ on:
 
 env:
   TIMEOUT: 60
-  SYS_SIZE: 5
+  SYS_SIZE: 10
     
 jobs:
   build-sys:
