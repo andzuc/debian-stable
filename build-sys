@@ -39,7 +39,6 @@ ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 
 # create system image hd
 for i in $(seq 1 "${SYS_SIZE}"); do rm -f "$BOOTPATH/sys_$i.img"; done
 for i in $(seq 1 "${SYS_SIZE}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1G; done
-for i in $(seq 1 "${SYS_SIZE}"); do dd if=/dev/zero of="$BOOTPATH/test_$i.img" bs=1K count=1M; done
 ls -l "$BOOTPATH"
 exit
 
@@ -61,7 +60,7 @@ qemu-system-aarch64 \
     -rtc base=utc,clock=host \
     -device virtio-scsi-pci,id=scsi0 \
     -device scsi-hd,drive=syshd,bus=scsi0.0,channel=0,scsi-id=0,lun=0 \
-    -drive file="$BOOTPATH/sys.img",format=qcow2,if=none,id=syshd
+    -drive file="$BOOTPATH/sys_1.img",format=qcow2,if=none,id=syshd
 #    -cdrom https://nl.alpinelinux.org/alpine/latest-stable/releases/aarch64/alpine-standard-3.13.5-aarch64.iso
 #    -machine dumpdtb=virt.dtb \
 #    -bios "edk2-aarch64-code.fd" \
