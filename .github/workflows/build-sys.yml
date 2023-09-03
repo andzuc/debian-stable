@@ -2,8 +2,14 @@ name: build-sys
 
 on:
   workflow_dispatch:
+  push:
+    branches:
+      - main
 
 env:
+  QEMU_ARCH: aarch64
+  QEMU_CPU: cortex-a53
+  DEB_ARCH: arm64
   TIMEOUT: 60
   SYS_SIZE: 1
 
@@ -20,8 +26,8 @@ jobs:
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
-          ./fetch-kernel
-          ./build-sys ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}
+          ./fetch-kernel ${{ env.DEB_ARCH }}
+          ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}
       # - name: Upload system image
       #   uses: actions/upload-artifact@v3
       #   with:

@@ -1,6 +1,15 @@
 #!/bin/bash
+
+if ! [ $# -eq 1 ]; then
+    APP_NAME="$(basename $0)"
+    echo "${APP_NAME}: usage is: ${APP_NAME} {DEB_ARCH}"
+    echo -e "DEB_ARCH:\tDebian target platform"
+    exit 1
+fi
+
+DEB_ARCH="${1}"
 NETBOOT_ROOT="https://deb.debian.org/debian/dists/stable/main/installer-arm64/current/images"
-NETBOOT_KERNEL="netboot/debian-installer/arm64"
+NETBOOT_KERNEL="netboot/debian-installer/${DEB_ARCH}"
 NETBOOT_URL="$NETBOOT_ROOT/$NETBOOT_KERNEL"
 
 [ -d fetch ] || mkdir fetch

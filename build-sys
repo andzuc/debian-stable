@@ -1,8 +1,10 @@
 #!/bin/bash
 
-if ! [ $# -eq 2 ]; then
+if ! [ $# -eq 4 ]; then
     APP_NAME="$(basename $0)"
-    echo "${APP_NAME}: usage is: ${APP_NAME} {TIMEOUT} {SYS_SIZE}"
+    echo "${APP_NAME}: usage is: ${APP_NAME} {QEMU_ARCH} {QEMU_CPU} {TIMEOUT} {SYS_SIZE}"
+    echo -e "QEMU_ARCH:\tQEMU emulation target platform"
+    echo -e "QEMU_CPU:\tQEMU emulation target CPU"
     echo -e "TIMEOUT:\tBuild time in minutes before machine is powered off"
     echo -e "SYS_SIZE:\tTotal system disks size in GBi"
     exit 1
@@ -10,16 +12,18 @@ fi
 
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
-TIMEOUT="$((($1-1)*60))"
+QEMU_ARCH="$1"
+QEMU_CPU="$2"
+TIMEOUT="$((($3-1)*60))"
 # ceiling of system image size if decimal 
-SYS_SIZE="$(echo $2|awk '{print $1%1?int($1)+1:$1}')"
+SYS_SIZE="$(echo $4|awk '{print $1%1?int($1)+1:$1}')"
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
 cp -f fetch/linux "$BOOTPATH"
 cp -f fetch/initrd.gz "$BOOTPATH"
-cp -f edk2-aarch64-code.fd.bz2 "$BOOTPATH"
-bzip2 -d "$BOOTPATH/edk2-aarch64-code.fd.bz2"
+# cp -f edk2-aarch64-code.fd.bz2 "$BOOTPATH"
+# bzip2 -d "$BOOTPATH/edk2-aarch64-code.fd.bz2"
 
 # add shutdown hook
 cd "$BOOTPATH"
@@ -42,12 +46,12 @@ for i in $(seq 1 "${SYS_SIZE}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.i
 ls -l "$BOOTPATH"
 exit
 
-qemu-system-aarch64 \
+"qemu-system-${QEMU_ARCH}" \
     -d unimp,guest_errors \
     -D qemu.log \
     -serial mon:stdio \
     -machine virt,virtualization=true,kernel_irqchip=on,gic-version=3 \
-    -cpu cortex-a53 \
+    -cpu "QEMU_CPU" \
     -m 512M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
