@@ -44,7 +44,6 @@ ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 
 for i in $(seq 1 "${SYS_SIZE}"); do rm -f "$BOOTPATH/sys_$i.img"; done
 for i in $(seq 1 "${SYS_SIZE}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1G; done
 ls -l "$BOOTPATH"
-exit
 
 "qemu-system-${QEMU_ARCH}" \
     -d unimp,guest_errors \
