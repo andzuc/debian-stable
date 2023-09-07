@@ -14,7 +14,7 @@ DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
 QEMU_ARCH="$1"
 QEMU_CPU="$2"
-TIMEOUT="$((($3-1)*60))"
+TIMEOUT="$((($3-5)*60))"
 # ceiling of system image size if decimal 
 SYS_SIZE="$(echo $4|awk '{print $1%1?int($1)+1:$1}')"
 
