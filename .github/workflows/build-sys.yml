@@ -22,22 +22,22 @@ jobs:
       - name: Install QEMU
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y qemu-system-aarch64
+          sudo apt-get install -y qemu-system-${{ env.QEMU_ARCH }}
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
           ./fetch-kernel ${{ env.DEB_ARCH }}
           ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}
-      # - name: Upload system image
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: dockemu-arm64
-      #     path: |
-      #       boot/linux
-      #       boot/initrd.gz
-      #       boot/sys.img
-      # - name: Upload MD5SUMS
-      #   uses: actions/upload-artifact@v3
-      #   with:
-      #     name: dockemu-arm64.md5
-      #     path: boot/MD5SUMS
+      - name: Upload system image
+        uses: actions/upload-artifact@v3
+        with:
+          name: dockemu-${{ env.DEB_ARCH }}
+          path: |
+            boot/linux
+            boot/initrd.gz
+            boot/sys_*.img
+      - name: Upload MD5SUMS
+        uses: actions/upload-artifact@v3
+        with:
+          name: dockemu-${{ env.DEB_ARCH }}.md5
+          path: boot/MD5SUMS

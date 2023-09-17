@@ -15,8 +15,8 @@ BOOTPATH=boot
 QEMU_ARCH="$1"
 QEMU_CPU="$2"
 TIMEOUT="$((($3-5)*60))"
-# ceiling of system image size if decimal 
-SYS_SIZE="$(echo $4|awk '{print $1%1?int($1)+1:$1}')"
+# ceiling of system image size if decimal
+SYS_COUNT="$(echo $4|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1)/1.5 } ; { print ceil(a) }')"
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
@@ -41,8 +41,8 @@ echo "WATCHDOG: timeout = $TIMEOUT"
 ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh|cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
 
 # create system image hd
-for i in $(seq 1 "${SYS_SIZE}"); do rm -f "$BOOTPATH/sys_$i.img"; done
-for i in $(seq 1 "${SYS_SIZE}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1.5G; done
+for i in $(seq 1 "${SYS_COUNT}"); do rm -f "$BOOTPATH/sys_$i.img"; done
+for i in $(seq 1 "${SYS_COUNT}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1.5G; done
 ls -l "$BOOTPATH"
 
 "qemu-system-${QEMU_ARCH}" \
@@ -71,7 +71,7 @@ ls -l "$BOOTPATH"
 #    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
 
 cd "$BOOTPATH"
-md5sum linux initrd.gz sys.img >MD5SUMS
+md5sum linux initrd.gz sys_*.img >MD5SUMS
 cd -
 
 # if terminal then reset
