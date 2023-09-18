@@ -2,16 +2,35 @@ name: build-sys
 
 on:
   workflow_dispatch:
+    inputs:
+      qemu_arch:
+        description: 'QEMU system target platform'
+        required: true
+        default: 'aarch64'
+      qemu_cpu:
+        description: 'QEMU system target CPU'
+        required: true
+        default: 'cortex-a53'
+      deb_arch:
+        description: 'DEBIAN system platform'
+        required: true
+        default: 'amd64'
+      timeout:
+        description: 'Build time in minutes before machine is powered off'
+        default: '60'
+      sys_size:
+        description: 'Total system disks size in GBi'
+        default: '1.5'
   push:
     branches:
       - master
 
 env:
-  QEMU_ARCH: aarch64
-  QEMU_CPU: cortex-a53
-  DEB_ARCH: arm64
-  TIMEOUT: 60
-  SYS_SIZE: 1
+  QEMU_ARCH: ${{ github.event.inputs.qemu_arch }}
+  QEMU_CPU: ${{ github.event.inputs.qemu_cpu }}
+  DEB_ARCH: ${{ github.event.inputs.deb_arch }}
+  TIMEOUT: ${{ github.event.inputs.timeout }}
+  SYS_SIZE: ${{ github.event.inputs.sys_size }}
 
 jobs:
   build-sys:

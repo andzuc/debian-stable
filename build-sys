@@ -3,8 +3,8 @@
 if ! [ $# -eq 4 ]; then
     APP_NAME="$(basename $0)"
     echo "${APP_NAME}: usage is: ${APP_NAME} {QEMU_ARCH} {QEMU_CPU} {TIMEOUT} {SYS_SIZE}"
-    echo -e "QEMU_ARCH:\tQEMU emulation target platform"
-    echo -e "QEMU_CPU:\tQEMU emulation target CPU"
+    echo -e "QEMU_ARCH:\tQEMU systemn target platform"
+    echo -e "QEMU_CPU:\tQEMU system target CPU"
     echo -e "TIMEOUT:\tBuild time in minutes before machine is powered off"
     echo -e "SYS_SIZE:\tTotal system disks size in GBi"
     exit 1
@@ -16,7 +16,7 @@ QEMU_ARCH="$1"
 QEMU_CPU="$2"
 TIMEOUT="$((($3-5)*60))"
 # ceiling of system image size if decimal
-SYS_COUNT="$(echo $4|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1)/1.5 } ; { print ceil(a) }')"
+SYS_COUNT="$(echo $4|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
