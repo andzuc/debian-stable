@@ -26,11 +26,11 @@ on:
       - master
 
 env:
-  QEMU_ARCH: ${{ github.event.inputs.qemu_arch || ${{ vars.QEMU_ARCH }} }}
-  QEMU_CPU: ${{ github.event.inputs.qemu_cpu || ${{ vars.QEMU_CPU }} }}
-  DEB_ARCH: ${{ github.event.inputs.deb_arch || ${{ vars.DEB_ARCH }} }}
-  TIMEOUT: ${{ github.event.inputs.timeout || ${{ vars.TIMEOUT }} }}
-  SYS_SIZE: ${{ github.event.inputs.sys_size || ${{ vars.SYS_SIZE }} }}
+  QEMU_ARCH: ${{ github.event.inputs.qemu_arch || '${{ vars.QEMU_ARCH }}' }}
+  QEMU_CPU: ${{ github.event.inputs.qemu_cpu || '${{ vars.QEMU_CPU }}' }}
+  DEB_ARCH: ${{ github.event.inputs.deb_arch || '${{ vars.DEB_ARCH }}' }}
+  TIMEOUT: ${{ github.event.inputs.timeout || '${{ vars.TIMEOUT }}' }}
+  SYS_SIZE: ${{ github.event.inputs.sys_size || '${{ vars.SYS_SIZE }}' }}
 
 jobs:
   build-sys:
