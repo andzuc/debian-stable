@@ -6,21 +6,21 @@ on:
       qemu_arch:
         description: 'QEMU system target platform'
         required: true
-        default: ${{ vars.QEMU_ARCH }}
+        default: 'aarch64'
       qemu_cpu:
         description: 'QEMU system target CPU'
         required: true
-        default: ${{ vars.QEMU_CPU }}
+        default: 'cortex-a53'
       deb_arch:
         description: 'DEBIAN system platform'
         required: true
-        default: ${{ vars.DEB_ARCH }}
+        default: 'arm64'
       timeout:
         description: 'Build time in minutes before machine is powered off'
-        default: ${{ vars.TIMEOUT }}
+        default: '60'
       sys_size:
         description: 'Total system disks size in GBi'
-        default: ${{ vars.SYS_SUZE }}
+        default: '1.5'
   push:
     branches:
       - master
