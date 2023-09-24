@@ -40,7 +40,7 @@ jobs:
         uses: actions/checkout@v4
       - name: Install QEMU
         run: |
-          echo QEMU_ARCH: ${{ env.QEMU_ARCH }
+          echo QEMU_ARCH: ${{ env.QEMU_ARCH }}
           sudo apt-get update -y
           sudo apt-get install -y qemu-system-${{ env.QEMU_ARCH }}
       - name: Build system image
