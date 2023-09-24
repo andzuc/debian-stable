@@ -6,31 +6,31 @@ on:
       qemu_arch:
         description: 'QEMU system target platform'
         required: true
-        default: 'aarch64'
+        default: ${{ vars.QEMU_ARCH }}
       qemu_cpu:
         description: 'QEMU system target CPU'
         required: true
-        default: 'cortex-a53'
+        default: ${{ vars.QEMU_CPU }}
       deb_arch:
         description: 'DEBIAN system platform'
         required: true
-        default: 'amd64'
+        default: ${{ vars.DEB_ARCH }}
       timeout:
         description: 'Build time in minutes before machine is powered off'
-        default: '60'
+        default: ${{ vars.TIMEOUT }}
       sys_size:
         description: 'Total system disks size in GBi'
-        default: '1.5'
+        default: ${{ vars.SYS_SUZE }}
   push:
     branches:
       - master
 
 env:
-  QEMU_ARCH: ${{ github.event.inputs.qemu_arch }}
-  QEMU_CPU: ${{ github.event.inputs.qemu_cpu }}
-  DEB_ARCH: ${{ github.event.inputs.deb_arch }}
-  TIMEOUT: ${{ github.event.inputs.timeout }}
-  SYS_SIZE: ${{ github.event.inputs.sys_size }}
+  QEMU_ARCH: ${{ github.event.inputs.qemu_arch || ${{ vars.QEMU_ARCH }} }}
+  QEMU_CPU: ${{ github.event.inputs.qemu_cpu || ${{ vars.QEMU_CPU }} }}
+  DEB_ARCH: ${{ github.event.inputs.deb_arch || ${{ vars.DEB_ARCH }} }}
+  TIMEOUT: ${{ github.event.inputs.timeout || ${{ vars.TIMEOUT }} }}
+  SYS_SIZE: ${{ github.event.inputs.sys_size || ${{ vars.SYS_SIZE }} }}
 
 jobs:
   build-sys:
@@ -40,7 +40,6 @@ jobs:
         uses: actions/checkout@v4
       - name: Install QEMU
         run: |
-          echo QEMU_ARCH: ${{ env.QEMU_ARCH }}
           sudo apt-get update -y
           sudo apt-get install -y qemu-system-${{ env.QEMU_ARCH }}
       - name: Build system image
