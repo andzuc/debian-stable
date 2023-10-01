@@ -1,0 +1,8 @@
+#!/bin/bash
+gh workflow run build-sys \
+   -F qemu_arch='x86_64' \
+   -F qemu_mach='type=q35' \
+   -F qemu_cpu='qemu64' \
+   -F deb_arch='amd64' \
+   -F timeout='60' \
+   -F sys_size='1.5'

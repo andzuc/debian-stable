@@ -46,7 +46,7 @@ jobs:
       - name: Install QEMU
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y qemu-system-${{ env.QEMU_ARCH }}
+          sudo apt-get install -y qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/')
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
