@@ -25,9 +25,9 @@ on:
       sys_size:
         description: 'Total system disks size in GBi'
         default: '1.5'
-  push:
-    branches:
-      - master
+  # push:
+  #   branches:
+  #     - master
 
 env:
   QEMU_ARCH: ${{ github.event.inputs.qemu_arch || vars.QEMU_ARCH }}
