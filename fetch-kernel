@@ -8,7 +8,7 @@ if ! [ $# -eq 1 ]; then
 fi
 
 DEB_ARCH="${1}"
-NETBOOT_ROOT="https://deb.debian.org/debian/dists/stable/main/installer-arm64/current/images"
+NETBOOT_ROOT="https://deb.debian.org/debian/dists/stable/main/installer-${DEB_ARCH}/current/images"
 NETBOOT_KERNEL="netboot/debian-installer/${DEB_ARCH}"
 NETBOOT_URL="$NETBOOT_ROOT/$NETBOOT_KERNEL"
 
