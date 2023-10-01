@@ -53,10 +53,10 @@ ls -l "$BOOTPATH"
     -serial mon:stdio \
     -machine "${QEMU_MACH}" \
     -cpu "${QEMU_CPU}" \
-    -m 512M \
+    -m 1024M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
-    -append "earlyprintk=serial console=ttyAMA0 BOOT_DEBUG=0 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
+    -append "earlyprintk=serial console=ttyS0 BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
     -nographic \
     -netdev user,id=net0 \
     -device driver=virtio-net-pci,netdev=net0 \
