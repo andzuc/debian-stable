@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if ! [ $# -eq 4 ]; then
+if ! [ $# -eq 5 ]; then
     APP_NAME="$(basename $0)"
     echo "${APP_NAME}: usage is: ${APP_NAME} {QEMU_ARCH} {QEMU_MACH} {QEMU_CPU} {TIMEOUT} {SYS_SIZE}"
     echo -e "QEMU_ARCH:\tQEMU systemn target platform"
