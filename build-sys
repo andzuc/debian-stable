@@ -2,8 +2,9 @@
 
 if ! [ $# -eq 4 ]; then
     APP_NAME="$(basename $0)"
-    echo "${APP_NAME}: usage is: ${APP_NAME} {QEMU_ARCH} {QEMU_CPU} {TIMEOUT} {SYS_SIZE}"
+    echo "${APP_NAME}: usage is: ${APP_NAME} {QEMU_ARCH} {QEMU_MACH} {QEMU_CPU} {TIMEOUT} {SYS_SIZE}"
     echo -e "QEMU_ARCH:\tQEMU systemn target platform"
+    echo -e "QEMU_MACH:\tQEMU system target machine"
     echo -e "QEMU_CPU:\tQEMU system target CPU"
     echo -e "TIMEOUT:\tBuild time in minutes before machine is powered off"
     echo -e "SYS_SIZE:\tTotal system disks size in GBi"
@@ -13,10 +14,11 @@ fi
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH=boot
 QEMU_ARCH="$1"
-QEMU_CPU="$2"
-TIMEOUT="$((($3-5)*60))"
+QEMU_MACH="$2"
+QEMU_CPU="$3"
+TIMEOUT="$((($4-5)*60))"
 # ceiling of system image size if decimal
-SYS_COUNT="$(echo $4|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
+SYS_COUNT="$(echo $5|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
@@ -49,7 +51,7 @@ ls -l "$BOOTPATH"
     -d unimp,guest_errors \
     -D qemu.log \
     -serial mon:stdio \
-    -machine virt,virtualization=true,kernel_irqchip=on,gic-version=3 \
+    -machine "${QEMU_MACH}" \
     -cpu "${QEMU_CPU}" \
     -m 512M \
     -kernel "$BOOTPATH/linux" \

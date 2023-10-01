@@ -7,6 +7,10 @@ on:
         description: 'QEMU system target platform'
         required: true
         default: 'aarch64'
+      qemu_mach:
+        description: 'QEMU system target machine'
+        required: true
+        default: 'virt,virtualization=true,kernel_irqchip=on,gic-version=3'
       qemu_cpu:
         description: 'QEMU system target CPU'
         required: true
@@ -27,6 +31,7 @@ on:
 
 env:
   QEMU_ARCH: ${{ github.event.inputs.qemu_arch || vars.QEMU_ARCH }}
+  QEMU_MACH: ${{ github.event.inputs.qemu_mach || vars.QEMU_MACH }}
   QEMU_CPU: ${{ github.event.inputs.qemu_cpu || vars.QEMU_CPU }}
   DEB_ARCH: ${{ github.event.inputs.deb_arch || vars.DEB_ARCH }}
   TIMEOUT: ${{ github.event.inputs.timeout || vars.TIMEOUT }}
@@ -46,7 +51,7 @@ jobs:
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
           ./fetch-kernel ${{ env.DEB_ARCH }}
-          ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}
+          ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_MACH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}
       - name: Upload system image
         uses: actions/upload-artifact@v3
         with:
