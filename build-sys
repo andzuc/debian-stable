@@ -47,6 +47,15 @@ for i in $(seq 1 "${SYS_COUNT}"); do rm -f "$BOOTPATH/sys_$i.img"; done
 for i in $(seq 1 "${SYS_COUNT}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1.5G; done
 ls -l "$BOOTPATH"
 
+case "${QEMU_ARCH}" in
+    aarch64)
+	CONSOLE=ttyAMA0
+	;;
+    *)
+	CONSOLE=ttyS0
+	;;
+esac
+
 "qemu-system-${QEMU_ARCH}" \
     -d unimp,guest_errors \
     -D qemu.log \
@@ -56,7 +65,7 @@ ls -l "$BOOTPATH"
     -m 1024M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
-    -append "earlyprintk=serial console=ttyS0 BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
+    -append "earlyprintk=serial console=${CONSOLE} BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
     -nographic \
     -netdev user,id=net0 \
     -device driver=virtio-net-pci,netdev=net0 \
