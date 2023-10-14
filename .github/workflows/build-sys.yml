@@ -36,6 +36,7 @@ env:
   DEB_ARCH: ${{ github.event.inputs.deb_arch || vars.DEB_ARCH }}
   TIMEOUT: ${{ github.event.inputs.timeout || vars.TIMEOUT }}
   SYS_SIZE: ${{ github.event.inputs.sys_size || vars.SYS_SIZE }}
+  BOOTPATH: boot
 
 jobs:
   build-sys:
@@ -54,16 +55,13 @@ jobs:
           ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_MACH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}
       - name: Build Vagrant Box
         run: |
-          cd boot
-          ../build-box
+          ./build-box
       - name: Upload system image
         uses: actions/upload-artifact@v3
         with:
           name: dockemu-${{ env.DEB_ARCH }}
           path: |
-            boot/linux
-            boot/initrd.gz
-            boot/sys_*.img
+            ${{ env.BOOTPATH }}/*
       - name: Upload MD5SUMS
         uses: actions/upload-artifact@v3
         with:

@@ -12,7 +12,7 @@ if ! [ $# -eq 5 ]; then
 fi
 
 DT="$(date --utc --iso-8601=seconds)"
-BOOTPATH=boot
+BOOTPATH="${BOOTPATH:-boot}"
 QEMU_ARCH="$1"
 QEMU_MACH="$2"
 QEMU_CPU="$3"
@@ -80,10 +80,6 @@ esac
 #    -bios "edk2-aarch64-code.fd" \
 #    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
 #    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
-
-cd "$BOOTPATH"
-md5sum linux initrd.gz sys_*.img >MD5SUMS
-cd -
 
 # if terminal then reset
 if [ -t 0 -a -t 1 -a -t 2 ]

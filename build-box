@@ -1,0 +1,7 @@
+#!/bin/bash
+cd "$BOOTPATH"
+for img in *.img; do
+    qemu-img convert -p -f qcow2 -O vdi "${img}" "${img%.*}.vdi"
+done
+md5sum linux initrd.gz sys_*.img sys_*.vdi >MD5SUMS
+cd -
