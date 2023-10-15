@@ -36,11 +36,7 @@ curl \
 #{"errors":["Metadata provider must be unique for version"],"success":false}
 
 echo -en "\nReceiving the upload url..."
-response=$(curl  \
-	       --verbose \
-	       --request GET \
-	       --header "Authorization: Bearer $VAGRANT_ACCESS_TOKEN" \
-	       https://app.vagrantup.com/api/v2/box/$USER/$BOX/version/$VERSION/provider/virtualbox/upload)
+response=$(curl --verbose --http1.1 --request GET --header "Authorization: Bearer $VAGRANT_ACCESS_TOKEN" https://app.vagrantup.com/api/v2/box/$USER/$BOX/version/$VERSION/provider/virtualbox/upload)
 
 upload_path=$(echo "$response" | jq .upload_path | tr -d '"')
 
