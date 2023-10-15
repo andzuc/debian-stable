@@ -7,7 +7,8 @@ PROVIDER=virtualbox
 ARCHITECTURE="${DEB_ARCH}"
 ORIGDIR="${PWD}"
 BOXPATH="${ORIGDIR}/image-vagrant/${BOX}.box"
-CHKSUM="$(sha512sum ${BOXPATH})"
+# takes only the first field of SHA512
+CHKSUM="$(sha512sum ${BOXPATH}|sed -E 's|([0-9a-f]+)\s*(.+)|\1|')"
 CHKSUM_TYPE="sha512"
 
 echo -n "Creating the box for $USER/$BOX..."

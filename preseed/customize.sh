@@ -6,8 +6,7 @@ cd "$MYDIR"
 
 
 DEBIAN_OS_VERSION="$(cat /etc/debian_version)"
-echo DEBIAN_OS_VERSION="${DEBIAN_OS_VERSION}a"
-od -t x1 /etc/debian_version
+echo DEBIAN_OS_VERSION="${DEBIAN_OS_VERSION}"
 
 # https://www.engineyard.com/blog/building-a-vagrant-box-from-start-to-finish/
 # no password for vagrant user sudo
