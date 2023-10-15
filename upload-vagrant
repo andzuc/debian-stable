@@ -3,8 +3,8 @@
 USER="${VAGRANT_USER}"
 BOX="${REPO_NAME}"
 VERSION="$1"
-PROVIDER_NAME=virtualbox
-ARCHITECTURE_NAME="${QEMU_ARCH}"
+PROVIDER=virtualbox
+ARCHITECTURE="${DEB_ARCH}"
 ORIGDIR="${PWD}"
 BOXPATH="${ORIGDIR}/image-vagrant/${BOX}.box"
 
@@ -32,12 +32,17 @@ curl \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $VAGRANT_ACCESS_TOKEN" \
     https://app.vagrantup.com/api/v2/box/$USER/$BOX/version/$VERSION/providers \
-    --data '{ "provider": { "name": "virtualbox" } }'
+    --data '{ "provider": { "name": "'$PROVIDER'", "architecture": "'$ARCHITECTURE'" } }'
 #{"errors":["Metadata provider must be unique for version"],"success":false}
 
 echo -en "\nReceiving the upload url..."
-response=$(curl --verbose --http1.1 --request GET --header "Authorization: Bearer $VAGRANT_ACCESS_TOKEN" https://app.vagrantup.com/api/v2/box/$USER/$BOX/version/$VERSION/provider/virtualbox/upload)
+response=$(curl --verbose \
+		--http1.1 \
+		--request GET \
+		--header "Authorization: Bearer $VAGRANT_ACCESS_TOKEN" \
+		https://app.vagrantup.com/api/v2/box/$USER/$BOX/version/$VERSION/provider/$PROVIDER/$ARCHITECTURE/upload)
 
+echo -en "Response: $response"
 upload_path=$(echo "$response" | jq .upload_path | tr -d '"')
 
 echo -en "\nUploading ..."
