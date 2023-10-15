@@ -9,5 +9,5 @@ echo "vagrant ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/vagrant
 
 sshsetup \
     /home/vagrant \
-    "${cat vagrant.pub}" \
+    "$(cat vagrant.pub)" \
     vagrant vagrant
