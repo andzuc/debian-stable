@@ -7,6 +7,8 @@ PROVIDER=virtualbox
 ARCHITECTURE="${DEB_ARCH}"
 ORIGDIR="${PWD}"
 BOXPATH="${ORIGDIR}/image-vagrant/${BOX}.box"
+CHKSUM="$(sha512sum ${BOXPATH})"
+CHKSUMTYPE="sha512"
 
 echo -n "Creating the box for $USER/$BOX..."
 curl \
@@ -32,7 +34,7 @@ curl \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $VAGRANT_ACCESS_TOKEN" \
     https://app.vagrantup.com/api/v2/box/$USER/$BOX/version/$VERSION/providers \
-    --data '{ "provider": { "name": "'$PROVIDER'", "architecture": "'$ARCHITECTURE'" } }'
+    --data '{ "provider": { "name": "'$PROVIDER'", "checksum":"'$CHKSUM'", "checksum_type":"'$CHKSUM_TYPE'", "architecture": "'$ARCHITECTURE'" } }'
 #{"errors":["Metadata provider must be unique for version"],"success":false}
 
 echo -en "\nReceiving the upload url..."
