@@ -1,0 +1,22 @@
+#!/bin/bash
+USERHOME="${1:-${HOME}}"
+
+# andrea@zuccherelli.net
+KEYID='A33A8F401149725380B7901096C7A1C61AB76949'
+gpg --list-keys "${KEYID}" >/dev/null 2>&1 \
+    || gpg --recv-key "${KEYID}"
+KEY="$(gpg --export-ssh-key A33A8F401149725380B7901096C7A1C61AB76949)"
+if ! [ -d "${USERHOME}/.ssh" ]; then
+    mkdir "${USERHOME}/.ssh"
+    chmod 700 "${USERHOME}/.ssh"
+    echo "${USERHOME}/.ssh directory created"
+fi
+if ! [ -f "${USERHOME}/.ssh/authorized_keys" ]; then
+    touch "${USERHOME}/.ssh/authorized_keys"
+    chmod 600 "${USERHOME}/.ssh/authorized_keys"
+    echo "${USERHOME}/.ssh/authorized_keys file created"
+fi
+if [ -z "$(grep "$KEY" "${USERHOME}/.ssh/authorized_keys")" ]; then
+    echo "$KEY" >> "${USERHOME}/.ssh/authorized_keys"
+    echo key added
+fi
