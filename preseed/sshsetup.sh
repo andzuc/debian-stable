@@ -1,6 +1,8 @@
 #!/bin/bash
 USERHOME="${1:-${HOME}}"
 KEY="$2"
+SSHOWNER="$3"
+SSHGROUP="$4"
 
 if ! [ -d "${USERHOME}/.ssh" ]; then
     mkdir "${USERHOME}/.ssh"
@@ -16,3 +18,5 @@ if [ -z "$(grep "$KEY" "${USERHOME}/.ssh/authorized_keys")" ]; then
     echo "$KEY" >> "${USERHOME}/.ssh/authorized_keys"
     echo key added
 fi
+
+chown -R "${SSHOWNER}.${SSHGROUP}" "${USERHOME}/.ssh"
