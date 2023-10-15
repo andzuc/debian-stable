@@ -57,7 +57,8 @@ jobs:
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
           ./fetch-kernel ${{ env.DEB_ARCH }}
-          ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_MACH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}
+          ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_MACH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}|tee sys.log
+          echo "IMAGE_VERSION=$(cat sys.log|sed -n 's/DEBIAN_OS_VERSION=\(.*\)/\1/p').$(cat sys.log|sed -n 's/DEBIAN_INITRD_DATE=\(.*\)/\1/p')" >>$GITHUB_ENV
       - name: Build QEMU image
         env:
           BOOTPATH: ${{ env.BOOTPATH }}
@@ -85,7 +86,7 @@ jobs:
         env:
           VAGRANT_USER: ${{ secrets.VAGRANT_USER }}
           VAGRANT_ACCESS_TOKEN: ${{ secrets.VAGRANT_ACCESS_TOKEN }}
-        run: ./upload-vagrant 0.0.1
+        run: ./upload-vagrant ${{ env.IMAGE_VERSION }}
       - name: Upload VAGRANT MD5SUMS
         uses: actions/upload-artifact@v3
         with:

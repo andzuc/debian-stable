@@ -35,6 +35,9 @@ function check_md5
     [ "$(get_md5_remote $REMOTE_FILE)" = "$(get_md5_local $LOCAL_FILE)" ]
 }
 
+DEBIAN_INITRD_DATE=$(date -ud "$(curl -s -I ""${NETBOOT_URL}/initrd.gz""|sed -n 's/^last-modified: \(.*\)/\1/p')" +%y%m%d%H%M)
+echo DEBIAN_INITRD_DATE="${DEBIAN_INITRD_DATE}"
+
 if ! check_md5 "./${NETBOOT_KERNEL}/linux" "linux" ; then
     echo "$0: linux: fetching"
     curl -O "$NETBOOT_URL/linux"
