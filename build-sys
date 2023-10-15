@@ -41,7 +41,7 @@ cd preseed
 sed "s/TIMEOUT/${TIMEOUT}/g" -i ./watchdog.sh
 echo "WATCHDOG: timeout = $TIMEOUT"
 # add preseed files
-ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh ./customize.sh ./sshsetup.sh \
+ls ./* \
     |cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
 cd -
 
