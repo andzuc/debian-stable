@@ -1,0 +1,8 @@
+#!/bin/bash
+cd "$BOOTPATH"
+mkdir vagrant
+for img in qemu/*.img; do
+    qemu-img convert -p -f qcow2 -O vdi "${img}" "vagrant/${img%.*}.vdi"
+done
+md5sum vagrant/sys_* >vagrant.MD5SUMS
+cd -

@@ -59,11 +59,11 @@ jobs:
       - name: Upload system image
         uses: actions/upload-artifact@v3
         with:
-          name: dockemu-${{ env.DEB_ARCH }}
+          name: dockemu-sys
           path: |
             ${{ env.BOOTPATH }}/*
       - name: Upload MD5SUMS
         uses: actions/upload-artifact@v3
         with:
-          name: dockemu-${{ env.DEB_ARCH }}.md5
+          name: dockemu-md5
           path: boot/MD5SUMS

@@ -1,0 +1,4 @@
+#!/bin/bash
+cd "${BOOTPATH}/qemu"
+md5sum linux initrd.gz sys_* >MD5SUMS
+cd -
