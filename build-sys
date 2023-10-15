@@ -12,7 +12,7 @@ if ! [ $# -eq 5 ]; then
 fi
 
 DT="$(date --utc --iso-8601=seconds)"
-BOOTPATH="${BOOTPATH:-$(pwd)/boot}"
+BOOTPATH="$(pwd)/${BOOTPATH:-boot}"
 QEMU_ARCH="$1"
 QEMU_MACH="$2"
 QEMU_CPU="$3"
