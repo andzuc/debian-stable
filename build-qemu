@@ -2,7 +2,9 @@
 IMAGE="${PWD}/image-qemu"
 mkdir "${IMAGE}"
 cd "${BOOTPATH}"
+echo cp * "${IMAGE}"
 cp * "${IMAGE}"
+echo cd "${IMAGE}"
 cd "${IMAGE}"
 md5sum * >.MD5SUMS
 mv .MD5SUMS MD5SUMS
