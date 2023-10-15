@@ -1,4 +1,5 @@
 #!/bin/bash
+IMAGETYPE="${1:-qemu}"
 
 function get_md5_remote
 {
@@ -19,17 +20,18 @@ function check_md5
     [ -f $LOCAL_FILE ]&&[ "$(get_md5_remote $REMOTE_FILE)" = "$(get_md5_local $LOCAL_FILE)" ]
 }
 
-[ -d image ] || mkdir image
-cd image
+[ -d image-"${IMAGETYPE}" ] || mkdir image-"${IMAGETYPE}"
+cd image-"${IMAGETYPE}"
 rm MD5SUMS
-gh run download -n dockemu-md5
+gh run download -n dockemu-"${IMAGETYPE}"-md5
 for F in `cat MD5SUMS|awk '{ print $2; }'`; do
     if ! check_md5 $F $F; then
 	echo "$F: md5 changed: downloading"
 	for RMF in `cat MD5SUMS|awk '{ print $2; }'`; do
 	    rm -f "$RMF"
 	done
-	gh run download -n dockemu-sys
+	rm -f MD5SUMS
+	gh run download -n dockemu-"${IMAGETYPE}"
 	exit 1
     fi
 done
