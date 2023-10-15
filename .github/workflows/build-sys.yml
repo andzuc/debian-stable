@@ -56,9 +56,9 @@ jobs:
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
-          ./fetch-kernel ${{ env.DEB_ARCH }}
+          ./fetch-kernel ${{ env.DEB_ARCH }}|tee fetch.log
           ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_MACH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}|tee sys.log
-          echo "IMAGE_VERSION=$(cat sys.log|sed -n 's/DEBIAN_OS_VERSION=\(.*\)/\1/p').$(cat sys.log|sed -n 's/DEBIAN_INITRD_DATE=\(.*\)/\1/p')" >>$GITHUB_ENV
+          echo "IMAGE_VERSION=$(cat sys.log|sed -n 's/.*DEBIAN_OS_VERSION=\([0-9]\+\.[0-9]\+\)/\1/p').$(cat fetch.log|sed -n 's/.*DEBIAN_INITRD_DATE=\([0-9]\+\)/\1/p')" >>$GITHUB_ENV
       - name: Build QEMU image
         env:
           BOOTPATH: ${{ env.BOOTPATH }}
