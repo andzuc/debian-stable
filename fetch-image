@@ -26,11 +26,12 @@ rm MD5SUMS
 gh run download -n dockemu-"${IMAGETYPE}"-md5
 for F in `cat MD5SUMS|awk '{ print $2; }'`; do
     if ! check_md5 $F $F; then
-	echo "$F: md5 changed: downloading"
 	for RMF in `cat MD5SUMS|awk '{ print $2; }'`; do
-	    rm -f "$RMF"
+	    echo "$F: md5 changed: removing $RMF"
+	    rm -rf "$RMF"
 	done
 	rm -f MD5SUMS
+	echo "$F: md5 changed: downloading"
 	gh run download -n dockemu-"${IMAGETYPE}"
 	exit 1
     fi

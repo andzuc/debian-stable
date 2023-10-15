@@ -1,6 +1,6 @@
 #!/bin/bash
 ORIGDIR="${PWD}"
-BOXNAME="debian-basevm"
+BOXNAME="${REPO_NAME}"
 IMAGE="${ORIGDIR}/image-vagrant/${BOXNAME}"
 mkdir -p "${IMAGE}"
 cd "${BOOTPATH}"
