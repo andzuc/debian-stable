@@ -1,11 +1,7 @@
 #!/bin/bash
 USERHOME="${1:-${HOME}}"
+KEY="$2"
 
-# andrea@zuccherelli.net
-KEYID='A33A8F401149725380B7901096C7A1C61AB76949'
-gpg --list-keys "${KEYID}" >/dev/null 2>&1 \
-    || gpg --recv-key "${KEYID}"
-KEY="$(gpg --export-ssh-key A33A8F401149725380B7901096C7A1C61AB76949)"
 if ! [ -d "${USERHOME}/.ssh" ]; then
     mkdir "${USERHOME}/.ssh"
     chmod 700 "${USERHOME}/.ssh"

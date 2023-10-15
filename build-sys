@@ -12,7 +12,7 @@ if ! [ $# -eq 5 ]; then
 fi
 
 DT="$(date --utc --iso-8601=seconds)"
-BOOTPATH="${BOOTPATH:-boot}"
+BOOTPATH="${BOOTPATH:-$(pwd)/boot}"
 QEMU_ARCH="$1"
 QEMU_MACH="$2"
 QEMU_CPU="$3"
@@ -36,12 +36,14 @@ echo etc/inittab|cpio -H newc -F initrd -oAv
 gzip initrd
 cd -
 
+cd preseed
 # set watchdog
 sed "s/TIMEOUT/${TIMEOUT}/g" -i ./watchdog.sh
 echo "WATCHDOG: timeout = $TIMEOUT"
-# add preseed
-ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh ./customize.sh \
+# add preseed files
+ls ./preseed.cfg ./setmirror.sh ./watchdog.sh ./onfail.sh ./customize.sh ./sshsetup.sh \
     |cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
+cd -
 
 # create system image hd
 for i in $(seq 1 "${SYS_COUNT}"); do rm -f "$BOOTPATH/sys_$i.img"; done
