@@ -8,7 +8,7 @@ ARCHITECTURE="${DEB_ARCH}"
 ORIGDIR="${PWD}"
 BOXPATH="${ORIGDIR}/image-vagrant/${BOX}.box"
 CHKSUM="$(sha512sum ${BOXPATH})"
-CHKSUMTYPE="sha512"
+CHKSUM_TYPE="sha512"
 
 echo -n "Creating the box for $USER/$BOX..."
 curl \
