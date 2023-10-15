@@ -5,7 +5,7 @@ cd "${BOOTPATH}"
 for img in *.img; do
     qemu-img convert -p -f qcow2 -O vmdk "${img}" "${IMAGE}/${img%.*}.vmdk"
 done
-cd "${BOOTPATH}/../vagrant"
+cd "../vagrant"
 cp -a * "${IMAGE}"
 cd "${IMAGE}"
 md5sum * >.MD5SUMS
