@@ -1,4 +1,9 @@
 #!/bin/bash
-cd "${BOOTPATH}/qemu"
-md5sum linux initrd.gz sys_* >MD5SUMS
+IMAGE="${PWD}/image-qemu"
+mkdir "${IMAGE}"
+cd "${BOOTPATH}"
+cp * "${IMAGE}"
+cd "${IMAGE}"
+md5sum * >.MD5SUMS
+mv .MD5SUMS MD5SUMS
 cd -
