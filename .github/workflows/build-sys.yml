@@ -54,28 +54,28 @@ jobs:
           ./fetch-kernel ${{ env.DEB_ARCH }}
           ./build-sys ${{ env.QEMU_ARCH }} ${{ env.QEMU_MACH }} ${{ env.QEMU_CPU }} ${{ env.TIMEOUT }} ${{ env.SYS_SIZE }}
       - name: Build QEMU image
-        run: |
-          ./build-qemu
+        env:
+          BOOTPATH: ${{ env.BOOTPATH }}
+        run: ./build-qemu
       - name: Upload QEMU image
         uses: actions/upload-artifact@v3
         with:
           name: dockemu-qemu
-          path: |
-            image-qemu/*
+          path: image-qemu/*
       - name: Upload QEMU MD5SUMS
         uses: actions/upload-artifact@v3
         with:
           name: dockemu-qemu-md5
           path: image-qemu/MD5SUMS
       - name: Build Vagrant image
-        run: |
-          ./build-vagrant
+        env:
+          BOOTPATH: ${{ env.BOOTPATH }}
+        run: ./build-vagrant
       - name: Upload VAGRANT image
         uses: actions/upload-artifact@v3
         with:
           name: dockemu-varant
-          path: |
-            image-vagrant/*
+          path: image-vagrant/*
       - name: Upload VAGRANT MD5SUMS
         uses: actions/upload-artifact@v3
         with:
