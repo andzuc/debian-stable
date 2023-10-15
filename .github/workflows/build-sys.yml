@@ -74,7 +74,7 @@ jobs:
       - name: Upload VAGRANT image
         uses: actions/upload-artifact@v3
         with:
-          name: dockemu-varant
+          name: dockemu-vagrant
           path: image-vagrant/*
       - name: Upload VAGRANT MD5SUMS
         uses: actions/upload-artifact@v3
