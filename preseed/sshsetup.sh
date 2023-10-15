@@ -19,4 +19,4 @@ if [ -z "$(grep "$KEY" "${USERHOME}/.ssh/authorized_keys")" ]; then
     echo key added
 fi
 
-chown -R "${SSHOWNER}.${SSHGROUP}" "${USERHOME}/.ssh"
+chown -R "${SSHOWNER}:${SSHGROUP}" "${USERHOME}/.ssh"
