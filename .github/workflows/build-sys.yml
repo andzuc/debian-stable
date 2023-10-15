@@ -84,7 +84,7 @@ jobs:
       - name: Upload VAGRANT image to Vagrant Cloud
         env:
           VAGRANT_ACCESS_TOKEN: ${{ secrets.VAGRANT_ACCESS_TOKEN }}
-        run: ./upload_vagrant 0.0.1
+        run: ./upload-vagrant 0.0.1
       - name: Upload VAGRANT MD5SUMS
         uses: actions/upload-artifact@v3
         with:
