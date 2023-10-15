@@ -1,5 +1,7 @@
 #!/bin/bash
-IMAGE="${PWD}/image-vagrant/debian-basevm.box"
+ORIGDIR="${PWD}"
+BOXNAME="debian-basevm"
+IMAGE="${ORIGDIR}/image-vagrant/${BOXNAME}"
 mkdir -p "${IMAGE}"
 cd "${BOOTPATH}"
 for img in *.img; do
@@ -8,7 +10,8 @@ done
 cd "../vagrant"
 cp -a * "${IMAGE}"
 cd "${IMAGE}"
+tar -cvzf "../${BOXNAME}.box" .
+cd ..
+rm -rf "${IMAGE}"
 md5sum * >.MD5SUMS
 mv .MD5SUMS MD5SUMS
-cp MD5SUMS ..
-cd -
