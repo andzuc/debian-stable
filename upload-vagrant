@@ -1,0 +1,1 @@
+curl 'https://vagrantcloud.com/api/v2/box/USERNAME/BOX_NAME/version/VERSION/provider/PROVIDER_NAME/ARCHITECTURE_NAME/upload?access_token=ACCESS_TOKEN'
