@@ -1,10 +1,12 @@
 #!/bin/bash
-IMAGE="${PWD}/image-vagrant"
+IMAGE="${PWD}/image-vagrant/debian-basevm.box"
 mkdir "${IMAGE}"
 cd "${BOOTPATH}"
 for img in *.img; do
-    qemu-img convert -p -f qcow2 -O vdi "${img}" "${IMAGE}/${img%.*}.vdi"
+    qemu-img convert -p -f qcow2 -O vmdk "${img}" "${IMAGE}/${img%.*}.vmdk"
 done
+cd "${BOOTPATH}/vagrant"
+cp -a * "${IMAGE}"
 cd "${IMAGE}"
 md5sum * >.MD5SUMS
 mv .MD5SUMS MD5SUMS
