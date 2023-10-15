@@ -1,5 +1,5 @@
 #!/bin/bash
-IMAGE="${PWD}/image-qemu"
+IMAGE="${PWD}/image-qemu-${IMAGE_VERSION}"
 mkdir "${IMAGE}"
 cd "${BOOTPATH}"
 echo cp * "${IMAGE}"
