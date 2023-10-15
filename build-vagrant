@@ -1,6 +1,6 @@
 #!/bin/bash
 IMAGE="${PWD}/image-vagrant/debian-basevm.box"
-mkdir "${IMAGE}"
+mkdir -p "${IMAGE}"
 cd "${BOOTPATH}"
 for img in *.img; do
     qemu-img convert -p -f qcow2 -O vmdk "${img}" "${IMAGE}/${img%.*}.vmdk"
