@@ -1,6 +1,6 @@
 #!/bin/bash
 # thanks to: https://iamhow.com/Tools_and_Scripts/Publish_vagrant_box_with_curl_and_rest_APIs.html
-USER="${REPO_OWNER}"
+USER="${VAGRANT_USER}"
 BOX="${REPO_NAME}"
 VERSION="$1"
 PROVIDER_NAME=virtualbox
