@@ -10,11 +10,11 @@ BOXPATH="${ORIGDIR}/image-vagrant/${BOX}.box"
 
 echo -n "Creating the box for $USER/$BOX..."
 curl \
-    --request POST
+    --request POST \
     --header "Content-Type: application/json" \
     --header "Authorization: Bearer $VAGRANT_ACCESS_TOKEN" \
     https://app.vagrantup.com/api/v2/boxes \
-    --data '{ "box": { "username": "'$USER'", "name": "'$BOX'", "private":false } }'
+    --data '{ "box": { "username": "'$USER'", "name": "'$BOX'", "is_private":false } }'
 #{"errors":["Type has already been taken"],"success":false}
 
 echo -en "\nCreate the version $VERSION..."
