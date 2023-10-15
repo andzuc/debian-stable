@@ -37,6 +37,7 @@ curl \
 
 echo -en "\nReceiving the upload url..."
 response=$(curl  \
+	       --verbose \
 	       --request GET \
 	       --header "Authorization: Bearer $VAGRANT_ACCESS_TOKEN" \
 	       https://app.vagrantup.com/api/v2/box/$USER/$BOX/version/$VERSION/provider/virtualbox/upload)
