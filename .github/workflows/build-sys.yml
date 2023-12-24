@@ -64,17 +64,17 @@ jobs:
       - name: Build QEMU image
         env:
           BOOTPATH: ${{ env.BOOTPATH }}
-        run: ./build-qemu ${{ env.IMAGE_VERSION }}
+        run: ./build-qemu
       - name: Upload QEMU image
         uses: actions/upload-artifact@v3
         with:
           name: dockemu-qemu
-          path: "image-qemu-${{ env.IMAGE_VERSION }}"/*
+          path: image-qemu/*
       - name: Upload QEMU MD5SUMS
         uses: actions/upload-artifact@v3
         with:
           name: dockemu-qemu-md5
-          path: "image-qemu-${{ env.IMAGE_VERSION }}"/MD5SUMS
+          path: image-qemu/MD5SUMS
       - name: Build Vagrant image
         env:
           BOOTPATH: ${{ env.BOOTPATH }}
