@@ -68,7 +68,7 @@ esac
     -m 1024M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
-    -append "earlyprintk=serial console=${CONSOLE} -- DEBCONF_DEBUG=5 BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
+    -append "earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
     -nographic \
     -netdev user,id=net0 \
     -device driver=virtio-net-pci,netdev=net0 \
