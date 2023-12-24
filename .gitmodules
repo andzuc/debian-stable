@@ -1,0 +1,3 @@
+[submodule "import2vbox"]
+	path = import2vbox
+	url = git@github.com:EmmanuelKasper/import2vbox.git
