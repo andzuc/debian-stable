@@ -20,6 +20,6 @@ sshsetup.sh \
     "$(cat vagrant.pub)" \
     vagrant vagrant
 
-# BOOTOPTS="consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0"
-# sed -i 's/\(GRUB_CMDLINE_LINUX_DEFAULT=\).*/\1\"'"${BOOTOPTS}"'\"/g' /etc/default/grub
-# bash -c 'update-grub'
+BOOTOPTS="consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0"
+sed -i 's/\(GRUB_CMDLINE_LINUX_DEFAULT=\).*/\1\"'"${BOOTOPTS}"'\"/g' /etc/default/grub
+update-grub
