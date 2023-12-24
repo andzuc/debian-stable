@@ -4,6 +4,9 @@ MYDIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && pwd)
 export PATH="$PATH:$MYDIR"
 cd "$MYDIR"
 
+echo ">>> debconf-get-selections"
+debconf-get-selections
+echo "<<< debconf-get-selections"
 
 DEBIAN_OS_VERSION="$(cat /etc/debian_version)"
 echo DEBIAN_OS_VERSION="${DEBIAN_OS_VERSION}"
