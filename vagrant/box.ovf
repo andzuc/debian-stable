@@ -13,7 +13,7 @@
       <Description>Logical network used by this appliance.</Description>
     </Network>
   </NetworkSection>
-  <VirtualSystem ovf:id="debian-basevm">
+  <VirtualSystem ovf:id="debian-stable">
     <Info>A virtual machine</Info>
     <OperatingSystemSection ovf:id="96">
       <Info>The kind of installed guest operating system</Info>
@@ -25,7 +25,7 @@
       <System>
         <vssd:ElementName>Virtual Hardware Family</vssd:ElementName>
         <vssd:InstanceID>0</vssd:InstanceID>
-        <vssd:VirtualSystemIdentifier>debian-basevm</vssd:VirtualSystemIdentifier>
+        <vssd:VirtualSystemIdentifier>debian-stable</vssd:VirtualSystemIdentifier>
         <vssd:VirtualSystemType>virtualbox-2.2</vssd:VirtualSystemType>
       </System>
       <Item>
@@ -74,7 +74,7 @@
         <rasd:ResourceType>10</rasd:ResourceType>
       </Item>
     </VirtualHardwareSection>
-    <vbox:Machine ovf:required="false" version="1.16-linux" uuid="{c3a612c5-ae44-4acc-b77b-aef6b54bfcc0}" name="debian-basevm">
+    <vbox:Machine ovf:required="false" version="1.16-linux" uuid="{c3a612c5-ae44-4acc-b77b-aef6b54bfcc0}" name="debian-stable">
       <ovf:Info>Complete VirtualBox machine configuration in VirtualBox format</ovf:Info>
       <Hardware>
 	<CPU count="2"></CPU>

@@ -3,4 +3,4 @@
 curl \
   --request GET \
   --header "Authorization: Bearer $VAGRANT_CLOUD_TOKEN" \
-  https://app.vagrantup.com/api/v2/box/andreazuccherelli/debian-basevm/version/0.0.1/provider/virtualbox/amd64
+  https://app.vagrantup.com/api/v2/box/andreazuccherelli/debian-stable/version/0.0.1/provider/virtualbox/amd64

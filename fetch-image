@@ -23,7 +23,7 @@ function check_md5
 [ -d image-"${IMAGETYPE}" ] || mkdir image-"${IMAGETYPE}"
 cd image-"${IMAGETYPE}"
 rm MD5SUMS
-gh run download -n dockemu-"${IMAGETYPE}"-md5
+gh run download -n debian-stable-"${IMAGETYPE}"-md5
 for F in `cat MD5SUMS|awk '{ print $2; }'`; do
     if ! check_md5 $F $F; then
 	for RMF in `cat MD5SUMS|awk '{ print $2; }'`; do
@@ -32,7 +32,7 @@ for F in `cat MD5SUMS|awk '{ print $2; }'`; do
 	done
 	rm -f MD5SUMS
 	echo "$F: md5 changed: downloading"
-	gh run download -n dockemu-"${IMAGETYPE}"
+	gh run download -n debian-stable-"${IMAGETYPE}"
 	exit 1
     fi
 done
