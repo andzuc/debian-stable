@@ -8,6 +8,7 @@ echo ">>> debconf-get-selections"
 debconf-get-selections
 echo "<<< debconf-get-selections"
 
+# Write out debian_osversion to evaluate IMAGE_VERSION
 DEBIAN_OS_VERSION="$(cat /etc/debian_version)"
 echo DEBIAN_OS_VERSION="${DEBIAN_OS_VERSION}"
 
@@ -15,11 +16,23 @@ echo DEBIAN_OS_VERSION="${DEBIAN_OS_VERSION}"
 # no password for vagrant user sudo
 echo "vagrant ALL=(ALL) NOPASSWD:ALL" >>/etc/sudoers.d/vagrant
 
+# disable PAM access for vagrant user
+# see https://superuser.com/a/603334
+sed -Ei 's|(vagrant):([^:]*):(.*)|\1:\*:\3|g' /etc/shadow
+sed -Ei 's|#\s*(account\s*required\s*pam_access\.so.*)|\1|g' /etc/pam.d/login
+echo "-:vagrant:ALL" >>/etc/security/access.conf
+
+# Setup vagrant pubkey
 sshsetup.sh \
     /home/vagrant \
     "$(cat vagrant.pub)" \
     vagrant vagrant
 
+# Setup kernel boot parameters
 BOOTOPTS="consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0"
 sed -i 's/\(GRUB_CMDLINE_LINUX_DEFAULT=\).*/\1\"'"${BOOTOPTS}"'\"/g' /etc/default/grub
 update-grub
+
+# better compression: https://www.engineyard.com/blog/building-a-vagrant-box-from-start-to-finish/
+dd if=/dev/zero of=/EMPTY bs=1M
+rm -f /EMPTY
