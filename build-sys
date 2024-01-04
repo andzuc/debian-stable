@@ -2,12 +2,13 @@
 
 if ! [ $# -eq 5 ]; then
     APP_NAME="$(basename $0)"
-    echo "${APP_NAME}: usage is: ${APP_NAME} {QEMU_ARCH} {QEMU_MACH} {QEMU_CPU} {TIMEOUT} {SYS_SIZE}"
+    echo "${APP_NAME}: usage is: ${APP_NAME} {QEMU_ARCH} {QEMU_MACH} {QEMU_CPU} {TIMEOUT} {SYS_SIZE} {IMAGE_SUBVERSION}"
     echo -e "QEMU_ARCH:\tQEMU systemn target platform"
     echo -e "QEMU_MACH:\tQEMU system target machine"
     echo -e "QEMU_CPU:\tQEMU system target CPU"
     echo -e "TIMEOUT:\tBuild time in minutes before machine is powered off"
     echo -e "SYS_SIZE:\tTotal system disks size in GBi"
+    echo -e "IMAGE_SUBVERSION:\Suffix version for file /etc/image_version"
     exit 1
 fi
 
@@ -19,6 +20,7 @@ QEMU_CPU="$3"
 TIMEOUT="$((($4-5)*60))"
 # ceiling of system image size if decimal
 SYS_COUNT="$(echo $5|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
+IMAGE_SUBVERSION="$6"
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
@@ -68,7 +70,7 @@ esac
     -m 1024M \
     -kernel "$BOOTPATH/linux" \
     -initrd "$BOOTPATH/initrd.gz" \
-    -append "earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 - BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true" \
+    -append "earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 - BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true IMAGE_SUBVERSION=${IMAGE_SUBVERSION}" \
     -nographic \
     -netdev user,id=net0 \
     -device driver=virtio-net-pci,netdev=net0 \

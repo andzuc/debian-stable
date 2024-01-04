@@ -8,9 +8,11 @@ echo ">>> debconf-get-selections"
 debconf-get-selections
 echo "<<< debconf-get-selections"
 
-# Write out debian_osversion to evaluate IMAGE_VERSION
+# Write out debian os version to evaluate IMAGE_VERSION
 DEBIAN_OS_VERSION="$(cat /etc/debian_version)"
 echo DEBIAN_OS_VERSION="${DEBIAN_OS_VERSION}"
+IMAGE_SUBVERSION="$(cat /proc/cmdline|sed -En 's/.*(IMAGE_SUBVERSION=[^ ]*).*/\1/p'|tr -d '\n')"
+echo DEBIAN_IMAGE_VERSION="${DEBIAN_OS_VERSION}.${IMAGE_SUBVERSION}"|tee /etc/image_version
 
 # https://www.engineyard.com/blog/building-a-vagrant-box-from-start-to-finish/
 # no password for vagrant user sudo
