@@ -1,0 +1,9 @@
+#!/bin/bash
+DEVICES="$@"
+
+echo pvs ::
+for DEVICE in $DEVICES ; do
+    export DEVICE
+    cat partman_pvs.cfg|envsubst '$DEVICE'
+done
+cat partman_lvs.cfg
