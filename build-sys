@@ -21,6 +21,14 @@ TIMEOUT="$((($4-5)*60))"
 # ceiling of system image size if decimal
 SYS_COUNT="$(echo $5|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
 IMAGE_SUBVERSION="$6"
+HAS_KVM="$(grep -E 'svm|vmx' /proc/cpuinfo; echo $?)"
+
+echo -n "KVM: "
+if [ "$HAS_KVM" -eq 0 ]; then
+    echo "supported"
+else
+    echo "missing"
+fi
 
 rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
