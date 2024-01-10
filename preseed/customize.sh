@@ -15,6 +15,8 @@ IMAGE_SUBVERSION="$(cat /proc/cmdline|sed -En 's/.*IMAGE_SUBVERSION=([^ ]*).*/\1
 echo DEBIAN_IMAGE_VERSION="${DEBIAN_OS_VERSION}.${IMAGE_SUBVERSION}"|tee /etc/image_version
 
 echo ">>> DISKS"
+echo "lspci -tv"
+lspci -tv
 echo "lsblk --output NAME,HCTL,FSTYPE,LABEL,UUID,MODE,FSUSE%,FSSIZE,SIZE"
 lsblk --output NAME,HCTL,FSTYPE,LABEL,UUID,MODE,FSUSE%,FSSIZE,SIZE
 echo "df -h"
