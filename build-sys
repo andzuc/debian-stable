@@ -50,14 +50,16 @@ cd -
 
 
 # create system image drive targets
+rm -f "$BOOTPATH/sys_boot.img"
+qemu-img create -f qcow2 "$BOOTPATH/sys_boot.img" 300M;
 for i in $(seq 1 "${SYS_COUNT}"); do rm -f "$BOOTPATH/sys_$i.img"; done
 for i in $(seq 1 "${SYS_COUNT}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1.5G; done
 ls -l "$BOOTPATH"
 
-SYSHD_DEVICES=""
-SYSHD_DRIVES=""
+SYSHD_DEVICES="-device scsi-hd,drive=sysboot,bus=scsi0.0,channel=0,scsi-id=1,lun=0 "
+SYSHD_DRIVES="-drive file=\"$BOOTPATH/sys_boot.img\",format=qcow2,if=none,id=sysboot "
 for i in $(seq 1 "${SYS_COUNT}"); do
-    SYSHD_DEVICES="${SYSHD_DEVICES}-device scsi-hd,drive=syshd$i,bus=scsi0.0,channel=0,scsi-id=$i,lun=0 "
+    SYSHD_DEVICES="${SYSHD_DEVICES}-device scsi-hd,drive=syshd$i,bus=scsi0.0,channel=1,scsi-id=$i,lun=0 "
     SYSHD_DRIVES="${SYSHD_DRIVES}-drive file=\"$BOOTPATH/sys_$i.img\",format=qcow2,if=none,id=syshd$i "
 done
 
