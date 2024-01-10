@@ -3,7 +3,10 @@ DEVICES="$@"
 
 echo pvs ::
 for DEVICE in $DEVICES ; do
-    export DEVICE
+    if [ "$DEVICE" = "/dev/sda" ]
+    then
+	continue
+    fi
     cat partman_pvs.cfg|sed -E "s|\\\$DEVICE|$DEVICE|g"
 done
 cat partman_lvs.cfg
