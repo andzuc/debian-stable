@@ -3,6 +3,8 @@ echo ">>> SYSLOG"
 cat /var/log/syslog
 echo "<<< SYSLOG"
 
-echo ">>> DF"
+echo ">>> DISKS"
+lsblk --output NAME,HCTL,FSTYPE,LABEL,UUID,MODE,FSUSE%,FSSIZE,SIZE
 df -h
-echo "<<< DF"
+parted -l
+echo "<<< DISKS"
