@@ -80,6 +80,8 @@ case "${QEMU_ARCH}" in
 	;;
 esac
 
+mkdir data
+
 (
 cat <<EOF
 qemu-system-${QEMU_ARCH} \
@@ -98,6 +100,7 @@ qemu-system-${QEMU_ARCH} \
 -object rng-random,filename=/dev/urandom,id=rng0 \
 -device virtio-rng-pci,rng=rng0 \
 -rtc base=utc,clock=host \
+-virtfs FSDRIVER,path=data,mount_tag=shared,security_model=mapped-xattr
 -device virtio-scsi-pci,id=scsi0 \
 -device virtio-scsi-pci,id=scsi1 \
 ${SYSHD_DEVICES} \

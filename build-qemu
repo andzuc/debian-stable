@@ -2,6 +2,8 @@
 IMAGE="${PWD}/image-qemu"
 mkdir "${IMAGE}"
 cd "${BOOTPATH}"
+tar -cvzf data.tar.gz data
+rm -rf data linux initrd.gz
 echo cp * "${IMAGE}"
 cp * "${IMAGE}"
 echo cd "${IMAGE}"

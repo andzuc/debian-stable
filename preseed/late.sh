@@ -4,6 +4,12 @@ MYDIR=$(cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &>/dev/null && pwd)
 export PATH="$PATH:$MYDIR"
 cd "$MYDIR"
 
+echo ">>> KERNEL"
+mkdir shared
+mount -t 9p -o trans=virtio shared shared -oversion=9p2000.L
+cp -a /boot shared
+echo "<<< KERNEL"
+
 echo ">>> debconf-get-selections"
 debconf-get-selections
 echo "<<< debconf-get-selections"
