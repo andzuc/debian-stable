@@ -49,7 +49,9 @@ cd -
 cd preseed
 # set watchdog
 sed "s/TIMEOUT/${TIMEOUT}/g" -i ./watchdog.sh
-echo "WATCHDOG: timeout = $TIMEOUT"
+echo "Watchdog: TIMEOUT = $TIMEOUT"
+sed "s/^SYSHD_DISKS=$/SYSHD_DISKS=${SYSHD_DISKS}/" -i ./early_partman.sh
+echo "EarlyPartman: SYSHD_DISKS = $SYSHD_DISKS"
 # add preseed files
 ls ./* \
     |cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
