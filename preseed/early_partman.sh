@@ -1,5 +1,7 @@
 #!/bin/sh
-list-devices disk
+echo ">>> LS"
+ls -R /sys
+echo "<<< LS"
 SYSHD_DISKS="$(echo $(list-devices disk)|tr -d '\n')"
 echo SYSHD_DISKS="${SYSHD_DISKS}"
 debconf-set partman-auto/disk "${SYSHD_DISKS}"
