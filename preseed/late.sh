@@ -5,6 +5,8 @@ export PATH="$PATH:$MYDIR"
 cd "$MYDIR"
 
 echo ">>> KERNEL"
+ls /boot
+zcat /boot/config.gz
 mkdir shared
 mount -t 9p -o trans=virtio shared shared -oversion=9p2000.L
 cp -a /boot shared
