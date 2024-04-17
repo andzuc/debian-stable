@@ -79,7 +79,11 @@ case "${QEMU_ARCH}" in
 	CONSOLE=ttyS0
 	;;
 esac
+echo CONSOLE=$CONSOLE
 
+KERNEL="$BOOTPATH/linux"
+INITRD="$BOOTPATH/initrd.gz"
+APPEND="earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 - BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true IMAGE_SUBVERSION=${IMAGE_SUBVERSION}"
 mkdir "$BOOTPATH/data"
 
 (
@@ -91,9 +95,9 @@ qemu-system-${QEMU_ARCH} \
 -machine "${QEMU_MACH}" \
 -cpu "${QEMU_CPU}" \
 -m 1024M \
--kernel "$BOOTPATH/linux" \
--initrd "$BOOTPATH/initrd.gz" \
--append "earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 - BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true IMAGE_SUBVERSION=${IMAGE_SUBVERSION}" \
+-kernel "$KERNEL" \
+-initrd "$INITRD" \
+-append "$APPEND" \
 -nographic \
 -netdev user,id=net0 \
 -device driver=virtio-net-pci,netdev=net0 \
