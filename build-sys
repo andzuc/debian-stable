@@ -22,6 +22,7 @@ TIMEOUT="$((($4-5)*60))"
 SYS_COUNT="$(echo $5|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
 IMAGE_SUBVERSION="$6"
 HAS_KVM="$(grep -E 'svm|vmx' /proc/cpuinfo 2>&1 >/dev/null; echo $?)"
+MACHINE="debian-stable"
 
 echo -n "KVM: "
 if [ "$HAS_KVM" = "0" ]; then
@@ -81,17 +82,20 @@ case "${QEMU_ARCH}" in
 esac
 echo CONSOLE=$CONSOLE
 
+SOCKET="qemu-mon_${MACHINE}.sock"
+echo SOCKET=$SOCKET
+
 KERNEL="$BOOTPATH/linux"
 INITRD="$BOOTPATH/initrd.gz"
 APPEND="earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 - BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true IMAGE_SUBVERSION=${IMAGE_SUBVERSION}"
 mkdir "$BOOTPATH/data"
 
-(
-cat <<EOF
+read -r -d '' QEMU <<EOF
 qemu-system-${QEMU_ARCH} \
 -d unimp,guest_errors \
 -D qemu.log \
 -serial mon:stdio \
+-monitor "unix:${SOCKET},server,nowait" \
 -machine "${QEMU_MACH}" \
 -cpu "${QEMU_CPU}" \
 -m 1024M \
@@ -110,7 +114,12 @@ qemu-system-${QEMU_ARCH} \
 ${SYSHD_DEVICES} \
 ${SYSHD_DRIVES}
 EOF
-)|sh
+
+if [ -n "$VMTAG" ]; then
+    QEMU="$QEMU -loadvm $VMTAG"
+fi
+
+eval "$QEMU"
 
 #    -cdrom https://nl.alpinelinux.org/alpine/latest-stable/releases/aarch64/alpine-standard-3.13.5-aarch64.iso
 #    -machine dumpdtb=virt.dtb \
