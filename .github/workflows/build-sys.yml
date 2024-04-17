@@ -67,28 +67,28 @@ jobs:
           BOOTPATH: ${{ env.BOOTPATH }}
         run: ./build-qemu
       - name: Upload QEMU image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: debian-stable-qemu
+          name: debian-stable-qemu-${{ env.DEB_ARCH }}
           path: image-qemu/*
       - name: Upload QEMU MD5SUMS
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: debian-stable-qemu-md5
+          name: debian-stable-qemu-${{ env.DEB_ARCH }}-md5
           path: image-qemu/MD5SUMS
       - name: Build Vagrant image
         env:
           BOOTPATH: ${{ env.BOOTPATH }}
         run: ./build-vagrant
       - name: Upload VAGRANT image
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: debian-stable-vagrant
+          name: debian-stable-vagrant-${{ env.DEB_ARCH }}
           path: image-vagrant/*
       - name: Upload VAGRANT MD5SUMS
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: debian-stable-vagrant-md5
+          name: debian-stable-vagrant-${{ env.DEB_ARCH }}-md5
           path: image-vagrant/MD5SUMS
       - name: Upload VAGRANT image to Vagrant Cloud
         env:
