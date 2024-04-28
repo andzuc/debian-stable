@@ -1,3 +1,6 @@
 [submodule "import2vbox"]
 	path = import2vbox
 	url = git@github.com:EmmanuelKasper/import2vbox.git
+[submodule "virt"]
+	path = virt
+	url = git@github.com:andzuc/virt-utils.git
