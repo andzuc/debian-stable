@@ -61,6 +61,7 @@ jobs:
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
+          id
           ./fetch-kernel ${{ env.DEB_ARCH }}|tee fetch.log
           DEBIAN_INITRD_DATE="$(cat fetch.log|sed -n 's/.*DEBIAN_INITRD_DATE=\([0-9]\+\).*/\1/p'|tr -d '\n')"
           IMAGE_SUBVERSION="${DEBIAN_INITRD_DATE}${{ github.run_number }}"
