@@ -56,6 +56,7 @@ jobs:
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends libvirt-daemon-system vagrant-libvirt qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/')
           sudo adduser "$(id -un)" libvirt
+          ls -l /var/run/libvirt/libvirt-sock
           virsh list --all
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
