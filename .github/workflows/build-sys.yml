@@ -49,10 +49,11 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install QEMU
+      - name: Install QEMI, libvirt
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/')
+          sudo apt-get install -y --no-install-recommends libvirt-daemon-system vagrant-libvirt qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/')
+          virsh list --all
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         run: |
