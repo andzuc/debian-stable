@@ -54,13 +54,11 @@ jobs:
       - name: Install QEMU, libvirt
         run: |
           sudo apt-get update -y
-          sudo apt-get install -y --no-install-recommends libvirt-clients libvirt-daemon-system libvirt-daemon virtinst bridge-utils vagrant-libvirt qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/')
+          sudo apt-get install -y --no-install-recommends libvirt-daemon-system virtinst vagrant-libvirt qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/')
           sudo usermod -a -G libvirt "$USER"
-          ls -l /var/run/libvirt/libvirt-sock
-          sudo -s -u $USER id
-          virsh list --all
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
+        shell: sudo -s -u "$USER" {0}
         run: |
           id
           ./fetch-kernel ${{ env.DEB_ARCH }}|tee fetch.log
