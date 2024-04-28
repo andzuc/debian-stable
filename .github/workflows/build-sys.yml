@@ -49,7 +49,9 @@ jobs:
         run: echo "$GITHUB_CONTEXT"
       - name: Checkout code
         uses: actions/checkout@v4
-      - name: Install QEMI, libvirt
+        with:
+          submodules: 'true'
+      - name: Install QEMU, libvirt
         run: |
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends libvirt-daemon-system vagrant-libvirt qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/')
