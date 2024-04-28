@@ -10,7 +10,7 @@ on:
       qemu_mach:
         description: 'QEMU system target machine'
         required: true
-        default: 'virt,virtualization=true,kernel_irqchip=on,gic-version=3'
+        default: 'virt'
       qemu_cpu:
         description: 'QEMU system target CPU'
         required: true
