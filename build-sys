@@ -12,18 +12,22 @@ if ! [ $# -eq 6 ]; then
     exit 1
 fi
 
+
 DT="$(date --utc --iso-8601=seconds)"
 BOOTPATH="$(pwd)/${BOOTPATH:-boot}"
-QEMU_ARCH="$1"
-QEMU_MACH="$2"
-QEMU_CPU="$3"
-TIMEOUT="$((($4-5)*60))"
-# ceiling of system image size if decimal
-SYS_COUNT="$(echo $5|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
-IMAGE_SUBVERSION="$6"
-HAS_KVM="$(grep -E 'svm|vmx' /proc/cpuinfo 2>&1 >/dev/null; echo $?)"
-MACHINE="debian-stable"
 
+export VIRT_NAME="debian-stable"
+export QEMU_ARCH="$1"
+export QEMU_MACH="$2"
+export QEMU_CPU="$3"
+export QEMU_MEM="1024"
+# ceiling of system image size if decimal
+export QEMU_SYSCOUNT="$(echo $5|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
+
+TIMEOUT="$((($4-5)*60))"
+IMAGE_SUBVERSION="$6"
+
+HAS_KVM="$(grep -E 'svm|vmx' /proc/cpuinfo 2>&1 >/dev/null; echo $?)"
 echo -n "KVM: "
 if [ "$HAS_KVM" = "0" ]; then
     echo "supported"
@@ -35,8 +39,6 @@ rm -rf "$BOOTPATH"
 mkdir "$BOOTPATH"
 cp -f fetch/linux "$BOOTPATH"
 cp -f fetch/initrd.gz "$BOOTPATH"
-# cp -f edk2-aarch64-code.fd.bz2 "$BOOTPATH"
-# bzip2 -d "$BOOTPATH/edk2-aarch64-code.fd.bz2"
 
 # add shutdown hook
 cd "$BOOTPATH"
@@ -56,24 +58,6 @@ ls ./* \
     |cpio -H newc -R +0:+0 -o|gzip >>"$BOOTPATH/initrd.gz"
 cd -
 
-
-
-# create system image drive targets
-rm -f "$BOOTPATH/sys_boot.img"
-qemu-img create -f qcow2 "$BOOTPATH/sys_boot.img" 300M;
-for i in $(seq 1 "${SYS_COUNT}"); do rm -f "$BOOTPATH/sys_$i.img"; done
-for i in $(seq 1 "${SYS_COUNT}"); do qemu-img create -f qcow2 "$BOOTPATH/sys_$i.img" 1.5G; done
-ls -l "$BOOTPATH"
-
-exit 0
-
-SYSHD_DEVICES="-device scsi-hd,drive=sysboot,bus=scsi0.0,channel=0,scsi-id=1,lun=0 "
-SYSHD_DRIVES="-drive file=\"$BOOTPATH/sys_boot.img\",format=qcow2,if=none,id=sysboot "
-for i in $(seq 1 "${SYS_COUNT}"); do
-    SYSHD_DEVICES="${SYSHD_DEVICES}-device scsi-hd,drive=syshd$i,bus=scsi1.0,channel=0,scsi-id=$i,lun=0 "
-    SYSHD_DRIVES="${SYSHD_DRIVES}-drive file=\"$BOOTPATH/sys_$i.img\",format=qcow2,if=none,id=syshd$i "
-done
-
 case "${QEMU_ARCH}" in
     aarch64)
 	CONSOLE=ttyAMA0
@@ -84,52 +68,16 @@ case "${QEMU_ARCH}" in
 esac
 echo CONSOLE=$CONSOLE
 
-SOCKET="qemu-mon_${MACHINE}.sock"
-echo SOCKET=$SOCKET
+export QEMU_KERNEL="$BOOTPATH/linux"
+export QEMU_INITRD="$BOOTPATH/initrd.gz"
+export QEMU_APPEND="earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 - BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true IMAGE_SUBVERSION=${IMAGE_SUBVERSION}"
 
-KERNEL="$BOOTPATH/linux"
-INITRD="$BOOTPATH/initrd.gz"
-APPEND="earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 - BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true IMAGE_SUBVERSION=${IMAGE_SUBVERSION}"
 mkdir "$BOOTPATH/data"
+export QEMU_SHARED="$BOOTPATH/data,shared"
+export QEMU_DISKPATH="$BOOTPATH"
 
-read -r -d '' QEMU <<EOF
-qemu-system-${QEMU_ARCH} \
--d unimp,guest_errors \
--D qemu.log \
--serial mon:stdio \
--monitor "unix:${SOCKET},server,nowait" \
--machine "${QEMU_MACH}" \
--cpu "${QEMU_CPU}" \
--m 1024M \
--kernel "$KERNEL" \
--initrd "$INITRD" \
--append "$APPEND" \
--nographic \
--netdev user,id=net0 \
--device driver=virtio-net-pci,netdev=net0 \
--object rng-random,filename=/dev/urandom,id=rng0 \
--device virtio-rng-pci,rng=rng0 \
--rtc base=utc,clock=host \
--virtfs local,path="$BOOTPATH/data",mount_tag=shared,security_model=mapped-xattr \
--device virtio-scsi-pci,id=scsi0 \
--device virtio-scsi-pci,id=scsi1 \
-${SYSHD_DEVICES} \
-${SYSHD_DRIVES}
-EOF
-
-if [ -n "$VMTAG" ]; then
-    QEMU="$QEMU -loadvm $VMTAG"
-fi
-
-eval "$QEMU"
-
-#    -cdrom https://nl.alpinelinux.org/alpine/latest-stable/releases/aarch64/alpine-standard-3.13.5-aarch64.iso
-#    -machine dumpdtb=virt.dtb \
-#    -bios "edk2-aarch64-code.fd" \
-#    -append "earlyprintk=serial console=ttyAMA0 init=/bin/ash" \
-#    -append "earlyprintk=serial console=ttyAMA0 DEBIAN_FRONTEND=text debconf/priority=low" \
-
-# if terminal then reset
+virt/mkvirt_kboot
+virt/start "$VIRT_NAME"
 
 if [ -t 0 -a -t 1 -a -t 2 ]
 then
