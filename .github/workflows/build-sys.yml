@@ -57,6 +57,8 @@ jobs:
           sudo apt-get install -y --no-install-recommends libvirt-daemon-system virtinst vagrant-libvirt qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/')
           sudo usermod -a -G libvirt "$USER"
           sudo usermod -a -G runner libvirt-qemu
+          ls -l /home
+          id libvirt-qemu
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         shell: sudo -s -u runner source {0}
