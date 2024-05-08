@@ -77,6 +77,7 @@ jobs:
       - name: Build QEMU image
         env:
           BOOTPATH: ${{ env.BOOTPATH }}
+        shell: sudo -s -u runner source {0}
         run: ./build-qemu
       - name: Upload QEMU image
         uses: actions/upload-artifact@v4
@@ -91,6 +92,7 @@ jobs:
       - name: Build Vagrant image
         env:
           BOOTPATH: ${{ env.BOOTPATH }}
+        shell: sudo -s -u runner source {0}
         run: ./build-vagrant
       - name: Upload VAGRANT image
         uses: actions/upload-artifact@v4
