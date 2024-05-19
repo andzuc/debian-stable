@@ -75,10 +75,8 @@ jobs:
           IMAGE_VERSION="$(cat sys.log|sed -n 's/.*DEBIAN_IMAGE_VERSION=\([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p'|tr -d '\n')"
           echo "IMAGE_VERSION=${IMAGE_VERSION}"|tee -a ${GITHUB_ENV}
       - name: Build QEMU image
-        env:
-          BOOTPATH: ${{ env.BOOTPATH }}
         shell: sudo -s -u runner source {0}
-        run: ./build-qemu
+        run: ./build-qemu ${{ env.BOOTPATH }}
       - name: Upload QEMU image
         uses: actions/upload-artifact@v4
         with:
@@ -90,10 +88,8 @@ jobs:
           name: debian-stable-qemu-${{ env.DEB_ARCH }}-md5
           path: image-qemu/MD5SUMS
       - name: Build Vagrant image
-        env:
-          BOOTPATH: ${{ env.BOOTPATH }}
         shell: sudo -s -u runner source {0}
-        run: ./build-vagrant
+        run: ./build-vagrant ${{ env.BOOTPATH }}
       - name: Upload VAGRANT image
         uses: actions/upload-artifact@v4
         with:

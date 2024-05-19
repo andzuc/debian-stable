@@ -1,6 +1,7 @@
 #!/bin/bash
 echo PWD: $PWD
 ls -l
+BOOTPATH="$1"
 ORIGDIR="${PWD}"
 BOXNAME="${REPO_NAME}"
 IMAGE="${ORIGDIR}/image-vagrant/${BOXNAME}"
@@ -8,11 +9,16 @@ mkdir -p "${IMAGE}"
 echo cd "${BOOTPATH}"
 cd "${BOOTPATH}"
 for img in *.img; do
-    qemu-img convert -p -f qcow2 -O vmdk "${img}" "${IMAGE}/${img%.*}.vmdk"
+    cp "${img}" "${IMAGE}/${img}"
 done
 cd "../vagrant"
 cp -a * "${IMAGE}"
 cd "${IMAGE}"
+METADATA_JSON="$(cat metadata.json|jq '. += {disks: []}')"|jq '.disks += [$ARGS.named]' --arg path 'Banana'|jq '.disks += [$ARGS.named]' --arg path 'Apple'
+for img in *.img; do
+    METADATA_JSON="$(echo $METADATA_JSON|jq '.disks += [$ARGS.named]' --arg path '$img')"
+done
+echo "$METADATA_JSON" >metadata.json
 tar -cvzf "../${BOXNAME}.box" .
 cd ..
 rm -rf "${IMAGE}"
