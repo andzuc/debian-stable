@@ -72,7 +72,9 @@ export QEMU_KERNEL="$BOOTPATH/linux"
 export QEMU_INITRD="$BOOTPATH/initrd.gz"
 export QEMU_APPEND="earlyprintk=serial console=${CONSOLE} consoleblank=0 elevator=noop scsi_mod.use_blk_mq=Y net.ifnames=0 biosdevname=0 - BOOT_DEBUG=1 DEBIAN_FRONTEND=text debconf/priority=critical auto-install/enable=true IMAGE_SUBVERSION=${IMAGE_SUBVERSION}"
 
+echo "Creating 9p shared: $BOOTPATH/data,shared"
 mkdir "$BOOTPATH/data"
+ls -l "$BOOTPATH/data"
 export QEMU_SHARED="$BOOTPATH/data,shared"
 export QEMU_DISKPATH="$BOOTPATH"
 
