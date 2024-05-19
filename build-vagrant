@@ -1,6 +1,7 @@
 #!/bin/bash
 echo PWD: $PWD
 ls -l
+BOOTPATH="$1"
 ORIGDIR="${PWD}"
 BOXNAME="${REPO_NAME}"
 IMAGE="${ORIGDIR}/image-vagrant/${BOXNAME}"
