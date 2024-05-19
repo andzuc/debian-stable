@@ -74,7 +74,7 @@ export QEMU_APPEND="earlyprintk=serial console=${CONSOLE} consoleblank=0 elevato
 
 echo "Creating 9p shared: $BOOTPATH/data,shared"
 mkdir "$BOOTPATH/data"
-ls -l "$BOOTPATH/data"
+ls -ld "$BOOTPATH/data"
 export QEMU_SHARED="$BOOTPATH/data,shared"
 export QEMU_DISKPATH="$BOOTPATH"
 
