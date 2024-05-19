@@ -3,6 +3,7 @@ echo PWD: $PWD
 ls -l
 IMAGE="${PWD}/image-qemu"
 mkdir "${IMAGE}"
+echo cd "${BOOTPATH}"
 cd "${BOOTPATH}"
 tar -cvzf data.tar.gz data
 rm -rf data linux initrd.gz

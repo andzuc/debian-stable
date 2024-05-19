@@ -5,6 +5,7 @@ ORIGDIR="${PWD}"
 BOXNAME="${REPO_NAME}"
 IMAGE="${ORIGDIR}/image-vagrant/${BOXNAME}"
 mkdir -p "${IMAGE}"
+echo cd "${BOOTPATH}"
 cd "${BOOTPATH}"
 for img in *.img; do
     qemu-img convert -p -f qcow2 -O vmdk "${img}" "${IMAGE}/${img%.*}.vmdk"
