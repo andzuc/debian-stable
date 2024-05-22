@@ -1,6 +1,5 @@
 #!/bin/bash
 echo PWD: $PWD
-ls -l
 BOOTPATH="$1"
 IMAGE="${PWD}/image-qemu"
 mkdir "${IMAGE}"
