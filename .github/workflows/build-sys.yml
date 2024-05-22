@@ -59,9 +59,9 @@ jobs:
           libvirt-daemon-system virtinst vagrant-libvirt qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/') qemu-utils
           sudo usermod -a -G libvirt,kvm "$USER"
           sudo usermod -a -G docker libvirt-qemu
-          ls -l /home
           id libvirt-qemu
-          sudo systemctl restart libvirtd
+          chgrp -R docker /home/runner/work
+          sudo systemctl restart libvirtd          
           sudo -u libvirt-qemu ls -lR /home/runner
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
