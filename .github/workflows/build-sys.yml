@@ -60,6 +60,7 @@ jobs:
           sudo usermod -a -G docker libvirt-qemu
           ls -l /home
           id libvirt-qemu
+          sudo systemctl restart libvirtd
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         shell: sudo -s -u runner source {0}
