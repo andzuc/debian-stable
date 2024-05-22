@@ -1,3 +1,4 @@
+
 name: build-sys
 
 on:
@@ -61,6 +62,7 @@ jobs:
           ls -l /home
           id libvirt-qemu
           sudo systemctl restart libvirtd
+          sudo -u libvirt-qemu ls -l /home/runner
       - name: Build system image
         timeout-minutes: ${{ fromJSON(env.TIMEOUT) }}
         shell: sudo -s -u runner source {0}
