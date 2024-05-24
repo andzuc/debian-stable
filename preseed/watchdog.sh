@@ -1,4 +1,4 @@
 #!/bin/sh
 
-sleep TIMEOUT
+sleep 3300
 poweroff

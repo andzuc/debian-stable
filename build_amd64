@@ -1,0 +1,15 @@
+#!/bin/bash
+QEMU_ARCH='x86_64'
+QEMU_MACH='q35'
+QEMU_CPU='qemu64'
+DEB_ARCH='amd64'
+TIMEOUT='60'
+SYS_SIZE='3'
+
+./fetch-kernel "${DEB_ARCH}"|tee fetch.log
+DEBIAN_INITRD_DATE="$(cat fetch.log|sed -n 's/.*DEBIAN_INITRD_DATE=\([0-9]\+\).*/\1/p'|tr -d '\n')"
+IMAGE_SUBVERSION="${DEBIAN_INITRD_DATE}"
+touch sys.log
+screen -L -Logfile sys.log -DmS build-sys ./build-sys "${QEMU_ARCH}" "${QEMU_MACH}" "${QEMU_CPU}" "${TIMEOUT}" "${SYS_SIZE}" "${IMAGE_SUBVERSION}" &
+BUILDPID=$!
+tail --pid=$BUILDPID -f sys.log
