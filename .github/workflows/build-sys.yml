@@ -60,6 +60,9 @@ jobs:
           sudo usermod -a -G libvirt,kvm "$USER"
           # sudo usermod -a -G docker libvirt-qemu
           id libvirt-qemu
+          sudo setfacl -m u:libvirt-qemu:rwx /home/runner
+          sudo getfacl -e /home/runner
+          ls -ld /home/runner
           # chgrp -R docker /home/runner/work
           # sudo systemctl restart libvirtd
           # sudo -u libvirt-qemu ls -lR /home/runner/work
