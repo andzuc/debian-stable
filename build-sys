@@ -40,13 +40,18 @@ mkdir "$BOOTPATH"
 cp -f fetch/linux "$BOOTPATH"
 cp -f fetch/initrd.gz "$BOOTPATH"
 
-# add shutdown hook
+# shutdown hook
 cd "$BOOTPATH"
+# extract /etc/inittab
 gzip -d initrd.gz
 cpio -H newc -F initrd -idmv etc/inittab
+# add the shutdown hook
 echo '::shutdown:/onfail.sh' >>etc/inittab
+# add the file back to initrd archive
 echo etc/inittab|cpio -H newc -F initrd -oAv
 gzip initrd
+rm etc/inittab
+rmdir etc
 cd -
 
 cd preseed
