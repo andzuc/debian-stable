@@ -17,6 +17,10 @@ for img in *.img; do
     METADATA_JSON="$(echo $METADATA_JSON|jq '.disks += [$ARGS.named]' --arg path '$img')"
 done
 echo "$METADATA_JSON" >metadata.json
+echo cat metadata.json
+cat metadata.json
+echo cat Vagrantfile
+cat Vagrantfile
 pwd
 tar -cvzf "../${BOXNAME}.box" .
 cd ..
