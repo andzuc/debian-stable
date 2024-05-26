@@ -96,7 +96,6 @@ jobs:
           name: debian-stable-qemu-${{ env.DEB_ARCH }}-md5
           path: image-qemu/MD5SUMS
       - name: Build Vagrant image
-        shell: sudo -s -u runner source {0}
         run: ./build-vagrant ${{ env.BOOTPATH }}
       - name: Upload VAGRANT image
         uses: actions/upload-artifact@v4
