@@ -81,6 +81,8 @@ jobs:
           tail --pid=$BUILDPID -f sys.log
           IMAGE_VERSION="$(cat sys.log|sed -n 's/.*DEBIAN_IMAGE_VERSION=\([0-9]\+\.[0-9]\+\.[0-9]\+\).*/\1/p'|tr -d '\n')"
           echo "IMAGE_VERSION=${IMAGE_VERSION}"|tee -a ${GITHUB_ENV}
+          echo cat ${GITHUB_ENV}
+          cat ${GITHUB_ENV}
           sudo chown -R "$USER" "${{ env.BOOTPATH }}"
       - name: Build QEMU image
         run: ./build-qemu
