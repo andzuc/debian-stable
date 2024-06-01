@@ -3,7 +3,7 @@
 USER="${VAGRANT_USER}"
 BOX="${REPO_NAME}"
 VERSION="$1"
-PROVIDER=virtualbox
+PROVIDER=libvirt
 ARCHITECTURE="${DEB_ARCH}"
 ORIGDIR="${PWD}"
 BOXPATH="${ORIGDIR}/image-vagrant/${BOX}.box"

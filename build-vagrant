@@ -12,7 +12,7 @@ done
 cd "${ORIGDIR}/vagrant"
 cp -a * "${IMAGE}"
 cd "${IMAGE}"
-METADATA_JSON="$(cat metadata.json|jq '. += {disks: []}')"|jq '.disks += [$ARGS.named]' --arg path 'Banana'|jq '.disks += [$ARGS.named]' --arg path 'Apple'
+METADATA_JSON="$(cat metadata.json|jq '. += {disks: []}')"
 for img in *.img; do
     METADATA_JSON="$(echo $METADATA_JSON|jq '.disks += [$ARGS.named]' --arg path '$img')"
 done
