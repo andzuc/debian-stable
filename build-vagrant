@@ -14,7 +14,7 @@ cp -a * "${IMAGE}"
 cd "${IMAGE}"
 METADATA_JSON="$(cat metadata.json|jq '. += {disks: []}')"
 for img in *.img; do
-    METADATA_JSON="$(echo $METADATA_JSON|jq '.disks += [$ARGS.named]' --arg path \"$img\")"
+    METADATA_JSON="$(echo $METADATA_JSON|jq '.disks += [$ARGS.named]' --arg path $img)"
 done
 echo "$METADATA_JSON" >metadata.json
 echo cat metadata.json
