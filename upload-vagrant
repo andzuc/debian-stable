@@ -11,6 +11,8 @@ BOXPATH="${ORIGDIR}/image-vagrant/${BOX}.box"
 CHKSUM="$(sha512sum ${BOXPATH}|sed -E 's|([0-9a-f]+)\s*(.+)|\1|')"
 CHKSUM_TYPE="sha512"
 
+set -e
+
 echo -n "Creating the box for $USER/$BOX..."
 curl \
     --request POST \
