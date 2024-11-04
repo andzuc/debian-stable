@@ -110,6 +110,8 @@ jobs:
           path: image-vagrant/MD5SUMS
       - name: Upload VAGRANT image to Vagrant Cloud
         env:
+          HCP_CLIENT_ID: ${{ secrets.HCP_CLIENT_ID }}
+          HCP_CLIENT_SECRET: ${{ secrets.HCP_CLIENT_SECRET }}
           VAGRANT_USER: ${{ secrets.VAGRANT_USER }}
           VAGRANT_ACCESS_TOKEN: ${{ secrets.VAGRANT_ACCESS_TOKEN }}
         run: ./upload-vagrant ${{ env.IMAGE_VERSION }}

@@ -21,10 +21,15 @@ HCP_API_TOKEN=$(curl --location "https://auth.idp.hashicorp.com/oauth2/token" \
 		     --data-urlencode "grant_type=client_credentials" \
 		     --data-urlencode "audience=https://api.hashicorp.cloud" \
 		    | jq -r .access_token)
+if [ -n "$HCP_API_TOKEN" ]; then
+    echo -en "\nGot HCP auth token"
+else
+    echo -en "\nNo HCP auth token"
+fi
 
 ACCESS_TOKEN="${VAGRANT_ACCESS_TOKEN};${HCP_API_TOKEN}"
 
-echo -n "Creating the box for $USER/$BOX..."
+echo -en "\nCreating the box for $USER/$BOX..."
 curl \
     --request POST \
     --header "Content-Type: application/json" \
