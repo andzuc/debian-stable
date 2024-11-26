@@ -5,4 +5,4 @@ gh workflow run build-sys \
    -F qemu_cpu='qemu64' \
    -F deb_arch='amd64' \
    -F timeout='60' \
-   -F sys_size='3'
+   -F sys_size='6'
