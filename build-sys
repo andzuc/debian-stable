@@ -20,7 +20,7 @@ export VIRT_NAME="debian-stable"
 export QEMU_ARCH="$1"
 export QEMU_MACH="$2"
 export QEMU_CPU="$3"
-export QEMU_MEM="1024"
+export QEMU_MEM="2048"
 # ceiling of system image size if decimal
 export QEMU_SYSCOUNT="$(echo $5|awk 'function ceil(v) { return v%1?int(v)+1:v } { a=ceil($1/1.5) } ; { print ceil(a) }')"
 
