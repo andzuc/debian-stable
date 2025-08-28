@@ -44,7 +44,7 @@ env:
 
 jobs:
   build-sys:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Dump github context
         run: echo "$GITHUB_CONTEXT"
