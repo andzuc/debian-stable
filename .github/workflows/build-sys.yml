@@ -44,7 +44,7 @@ env:
 
 jobs:
   build-sys:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     steps:
       - name: Dump github context
         run: echo "$GITHUB_CONTEXT"
@@ -56,7 +56,7 @@ jobs:
         run: |
           sudo apt-get update -y
           sudo apt-get install -y --no-install-recommends \
-          libvirt-daemon-system virtinst vagrant-libvirt qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/') qemu-utils
+          qemu-system-$(echo ${{ env.QEMU_ARCH }}|sed 's/_/-/') libvirt-daemon-system ebtables libguestfs-tools vagrant ruby-fog-libvirt virtinst qemu-utils
           sudo usermod -a -G libvirt,kvm "$USER"
           # sudo usermod -a -G docker libvirt-qemu
           id libvirt-qemu
@@ -71,6 +71,7 @@ jobs:
         shell: sudo -s -u runner source {0}
         run: |
           id
+          vagrant plugin install vagrant-libvirt
           ./fetch-kernel ${{ env.DEB_ARCH }}|tee fetch.log
           DEBIAN_INITRD_DATE="$(cat fetch.log|sed -n 's/.*DEBIAN_INITRD_DATE=\([0-9]\+\).*/\1/p'|tr -d '\n')"
           IMAGE_SUBVERSION="${DEBIAN_INITRD_DATE}${{ github.run_number }}"
